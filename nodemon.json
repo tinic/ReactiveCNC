@@ -1,0 +1,4 @@
+{
+    "watch": ["ReactiveCNC-Electron/*", "ReactiveCNC-Vue3/*", "ReactiveCNC-Vue3/*/*"],
+    "ext": "js,css,ts,json,vue"
+}
