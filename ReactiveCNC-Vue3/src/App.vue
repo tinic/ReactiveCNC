@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import gcode from "./GCode.ts";
 import GCodeTable from './components/GCodeTable.vue';
+import { ref, onMounted } from 'vue';
+const gcoderef = ref();
+onMounted(() => {
+  gcode.loadFromURL("/src/assets/gcode.txt").then(()=> {
+    gcoderef.value = gcode; 
+  })
+})
 </script>
 
 <template>
-  <GCodeTable style="width:600px;"></GCodeTable>
-  This is just a test.
+  <GCodeTable 
+    :gcode=gcoderef
+    style="width:600px;">
+  </GCodeTable>
 </template>
 
 <style scoped>
