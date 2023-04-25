@@ -17,10 +17,3 @@ jobs:
         run: npm install --global yarn && yarn install
       - name: Build app package
         run: yarn app:build
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          file: dist_electron/*.deb
-          asset_name: ReactiveCNC.deb
-          tag: latest
-          overwrite: true
