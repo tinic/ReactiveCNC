@@ -8,11 +8,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 18.x
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: npm install --global yarn
-      - run: yarn install
-      - run: yarn app:build
+      - name: Install and dependencies
+        run: npm install --global yarn && yarn install
+      - name: Build app package
+        run: yarn app:build
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: dist_electron/*.deb
+          asset_name: ReactiveCNC.deb
+          tag: latest
+          overwrite: true
