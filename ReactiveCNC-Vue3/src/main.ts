@@ -16,6 +16,7 @@ import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
 import Row from 'primevue/row';
 import Checkbox from 'primevue/checkbox';
+import TriStateCheckbox from 'primevue/tristatecheckbox';
 
 const routes = [{
   path: "/",
@@ -38,5 +39,6 @@ app.component('Column', Column);
 app.component('ColumnGroup', ColumnGroup);
 app.component('Row', Row);
 app.component('Checkbox', Checkbox);
+app.component('TriStateCheckbox', TriStateCheckbox);
 
 app.mount('#app')

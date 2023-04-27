@@ -1,8 +1,8 @@
 {
   "name": "ReactiveCNC",
   "majorversion": "0.0",
-  "gitversion": "11",
-  "version": "1.0.11",
+  "gitversion": "14",
+  "version": "0.0.14",
   "description": "ReactiveCNC for LinuxCNC",
   "main": "./dist/main.js",
   "license": "MIT",
