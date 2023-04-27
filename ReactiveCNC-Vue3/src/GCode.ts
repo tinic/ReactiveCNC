@@ -26,7 +26,7 @@ export class GCode {
         return s.substr(s.length-size);
     }
 
-    private reHighlight(index:number) {
+/*    private reHighlight(index:number) {
         var code;
         if (this.lines[index].altcode.length) {
             code = this.lines[index].altcode;
@@ -35,7 +35,7 @@ export class GCode {
             code = code.startsWith('N') ? code.replace(/N\d+/, '') : code;
         }
         this.lines[index].highlight = hljs.highlight("gcode", this.insertSpaces(code)).value;
-    }
+    }*/
 
     private insertSpaces(str:string):string {
         const segments = str.split(/(\([^)]*\))/g);
