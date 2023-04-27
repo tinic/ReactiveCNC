@@ -6,14 +6,14 @@ const props = defineProps({
   gcode: GCode
 })
 
-const lineTriCheck = ref(null);
-const updateLineTriCheck = (() => {
+const headerTriCheckbox = ref(null);
+const updateheaderTriCheckbox = (() => {
   if (!props.gcode) {
     return;
   }
   let lines = props.gcode?.lines;
-  if (lineTriCheck.value != null) {
-    if (lineTriCheck.value == true) {
+  if (headerTriCheckbox.value != null) {
+    if (headerTriCheckbox.value == true) {
       lines.forEach( (line) => {
         line.shadowactive = line.active;
         line.active = true;
@@ -30,20 +30,21 @@ const updateLineTriCheck = (() => {
   }
 });
 
-const updateLineCheck = ((line:GCodeLine) => {
+const updateLineCheckbox = ((line:GCodeLine) => {
   line.shadowactive = line.active;
-  lineTriCheck.value = null;
+  headerTriCheckbox.value = null;
 });
+
 </script>
 
 <template>
     <DataTable class="gridfont" showGridlines scrollable scrollHeight="20em" :value="props.gcode?.lines">
         <Column field="active" header="" class=" m-0 p-0 pl-3 pr-3">
           <template #header="">
-            <TriStateCheckbox v-model="lineTriCheck" @update:modelValue="updateLineTriCheck" style="text-align: center; vertical-align: middle;" />
+            <TriStateCheckbox v-model="headerTriCheckbox" @update:modelValue="updateheaderTriCheckbox" style="text-align: center; vertical-align: middle;" />
           </template>
           <template #body="props:any">
-            <Checkbox v-model="props.data.active" @change="updateLineCheck(props.data)" :binary="true" style="text-align: center; vertical-align: middle;" />
+            <Checkbox v-model="props.data.active" @change="updateLineCheckbox(props.data)" :binary="true" style="text-align: center; vertical-align: middle;" />
           </template>
         </Column>
         <Column field="line" header="Line" class="m-0 p-0 pl-1 pr-1">
