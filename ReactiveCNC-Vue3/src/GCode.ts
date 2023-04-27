@@ -24,6 +24,16 @@ export class GCode {
         return s.substr(s.length-size);
     }
 
+    private insertSpaces(str:string):string {
+        const segments = str.split(/(\([^)]*\))/g);
+        for (let i = 0; i < segments.length; i++) {
+            if (i % 2 === 0) {
+                segments[i] = segments[i].replace(/([A-Z])(?![a-z])/g, " $1");
+            }
+        }
+        return segments.join("");
+    }
+
     public async loadFromURL(url:string) {
         await this.getURL(url).then((gcode:any) => {
             const lines = gcode.split(/\r\n|\r|\n/);
@@ -41,7 +51,7 @@ export class GCode {
             lines.forEach((line: string): void => {
                 const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : 0;
                 const code: string = line.startsWith('N') ? line.replace(/N\d+/, '') : line;
-                const highlight: string = hljs.highlight("gcode", code).value;
+                const highlight: string = hljs.highlight("gcode", this.insertSpaces(code)).value;
                 const gcodeLine: GCodeLine = new GCodeLine()
                 gcodeLine.line = lineNumber > 0 ? this.pad(lineNumber, zeros) : "";
                 gcodeLine.code = line;
