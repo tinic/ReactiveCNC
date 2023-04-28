@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Line, LineBasicMaterial, LineCurve, LineDashedMaterial, LinearToneMapping } from "three/src/Three.js";
 import gcode from "./GCode.ts";
 import { GCodeLine } from "./GCode.ts"
 import GCodeTable from './components/GCodeTable.vue';
