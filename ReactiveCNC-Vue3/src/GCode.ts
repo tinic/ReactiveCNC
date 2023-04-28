@@ -1,5 +1,6 @@
 import 'highlightjs/styles/github.css';
 import hljs from 'highlightjs';
+import { ref } from "vue";
 
 function insertSpaces(str:string):string {
     const segments = str.split(/(\([^)]*\))/g);
@@ -92,5 +93,4 @@ export class GCode {
     }
 }
 
-let gcode:GCode = new GCode();
-export default gcode;
+export const gcoderef = ref(new GCode());
