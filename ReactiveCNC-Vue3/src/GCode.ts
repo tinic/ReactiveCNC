@@ -1,13 +1,48 @@
 import 'highlightjs/styles/github.css';
 import hljs from 'highlightjs';
 
+function insertSpaces(str:string):string {
+    const segments = str.split(/(\([^)]*\))/g);
+    for (let i = 0; i < segments.length; i++) {
+        if (i % 2 === 0) {
+            segments[i] = segments[i].replace(/([A-Z])(?![a-z])/g, " $1");
+        }
+    }
+    return segments.join("");
+}
+
+function removeLineNumber(line:string):string {
+    return line.startsWith('N') ? line.replace(/N\d+/, '') : line;
+}
+
+function highlight(line:string):string {
+    const code: string = line.startsWith('N') ? line.replace(/N\d+/, '') : line;
+    const highlight: string = hljs.highlight("gcode", insertSpaces(code)).value;
+    return highlight;
+}
+
 export class GCodeLine {
-    public code:string = '';
-    public altcode:string = '';
+
+    public originalcode:string = '';
+    public editedcode:string = '';
     public highlight:string = '';
     public line:string = '';
     public active:boolean = true;
     public shadowactive:boolean = false;
+    public uuid:string = crypto.randomUUID();
+    public edited:boolean = false;
+
+    public setEditCode(gcode:string) {
+        if (gcode == null || gcode.length == 0) {
+            this.editedcode = removeLineNumber(this.originalcode);
+            this.edited = false;
+        } else {
+            this.editedcode = gcode;
+            this.edited = true;
+        }
+        this.highlight = highlight(this.editedcode);
+    }
+
 }
 
 export class GCode {
@@ -26,27 +61,6 @@ export class GCode {
         return s.substr(s.length-size);
     }
 
-/*    private reHighlight(index:number) {
-        var code;
-        if (this.lines[index].altcode.length) {
-            code = this.lines[index].altcode;
-        } else {
-            code = this.lines[index].code;
-            code = code.startsWith('N') ? code.replace(/N\d+/, '') : code;
-        }
-        this.lines[index].highlight = hljs.highlight("gcode", this.insertSpaces(code)).value;
-    }*/
-
-    private insertSpaces(str:string):string {
-        const segments = str.split(/(\([^)]*\))/g);
-        for (let i = 0; i < segments.length; i++) {
-            if (i % 2 === 0) {
-                segments[i] = segments[i].replace(/([A-Z])(?![a-z])/g, " $1");
-            }
-        }
-        return segments.join("");
-    }
-
     public parseGCode(gcode:string) {
         const lines = gcode.split(/\r\n|\r|\n/).filter((str: string) => Boolean(str));
         const hasLineNumbers = lines.some((line: string): boolean => line.startsWith('N'));
@@ -62,12 +76,11 @@ export class GCode {
         }
         lines.forEach((line: string): void => {
             const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : 0;
-            const code: string = line.startsWith('N') ? line.replace(/N\d+/, '') : line;
-            const highlight: string = hljs.highlight("gcode", this.insertSpaces(code)).value;
             const gcodeLine: GCodeLine = new GCodeLine()
             gcodeLine.line = lineNumber > 0 ? this.padWithZeros(lineNumber, zeros) : "";
-            gcodeLine.code = line;
-            gcodeLine.highlight = highlight;
+            gcodeLine.originalcode = line;
+            gcodeLine.editedcode = removeLineNumber(line);
+            gcodeLine.highlight = highlight(line);
             this.lines.push(gcodeLine);
         });
     }

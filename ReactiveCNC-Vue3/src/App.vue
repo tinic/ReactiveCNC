@@ -1,19 +1,40 @@
 <script setup lang="ts">
+import { Line, LineBasicMaterial, LineCurve, LineDashedMaterial, LinearToneMapping } from "three/src/Three.js";
 import gcode from "./GCode.ts";
+import { GCodeLine } from "./GCode.ts"
 import GCodeTable from './components/GCodeTable.vue';
 import { ref, onMounted } from 'vue';
+
 const gcoderef = ref();
+
 onMounted(() => {
   gcode.loadFromURL("/src/assets/gcode.txt").then(()=> {
     gcoderef.value = gcode; 
   })
 })
+
+const updateGCodeLineEditCode = ((uuid:string, gcode:string) => {
+  var line = gcoderef.value.lines.find((item:GCodeLine) => item.uuid == uuid);
+  if (line != null) {
+    line.setEditCode(gcode);
+  }
+});
+
+const updateGCodeLineActive = ((uuid:string, value:boolean) => {
+  var line = gcoderef.value.lines.find((item:GCodeLine) => item.uuid == uuid);
+  if (line != null) {
+    line.active = value;
+  }
+});
+
 </script>
 
 <template>
   <GCodeTable 
     :gcode=gcoderef
-    style="width:600px;">
+    @updateGCodeLineEditCode=updateGCodeLineEditCode
+    @updateGCodeLineActive=updateGCodeLineActive
+    style="width:700px;">
   </GCodeTable>
 </template>
 
