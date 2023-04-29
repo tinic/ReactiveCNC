@@ -4,9 +4,15 @@ import GCodeTable from './components/GCodeTable.vue';
 import { ref, onMounted } from 'vue';
 
 const gcodeTable = ref();
+var line = 0;
 
 onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
+
+  setInterval(() => {
+    gcodeTable.value.scrollToRow(line++);
+    if (line > 25) line = 0;
+  },100);
 })
 
 const scrollDown = (() => {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
+import VirtualScroller from "primevue/virtualscroller";
 
 export interface Props {
   disabled: Boolean
@@ -71,9 +72,18 @@ const updateGCode = ((line:GCodeLine) => {
 
 
 const dataTable = ref(null);
+var virtualScroller:VirtualScroller;
+
 const scrollToRow = ((index:number) => {
-  index;
+  if (!dataTable.value) {
+    return;
+  }
+  virtualScroller.scrollToIndex(index);
 })
+
+onMounted(() => {
+  virtualScroller = (dataTable.value as any).getVirtualScrollerRef();
+});
 
 defineExpose({
   dataTable,
