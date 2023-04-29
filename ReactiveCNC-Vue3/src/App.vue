@@ -11,6 +11,7 @@ onMounted(() => {
 
   setInterval(() => {
     //gcodeTable.value.scrollToRow(line++);
+    gcodeTable.value.selectRow(line++);
     if (line > 25) line = 0;
   },100);
 })

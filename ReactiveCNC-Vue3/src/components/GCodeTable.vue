@@ -1,13 +1,16 @@
 <script setup lang="ts">
+
 import { ref, onMounted } from "vue";
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
+
+import DataTable from "primevue/datatable";
 import VirtualScroller from "primevue/virtualscroller";
+import TriStateCheckbox from 'primevue/tristatecheckbox';
 
-const rowSelectionRef = ref();
-const dataTableRef = ref(null);
-const headerTriCheckboxRef = ref(null);
-
-var virtualScroller: VirtualScroller;
+const rowSelectionRef = ref<GCodeLine>();
+const dataTableRef = ref<DataTable>();
+const headerTriCheckboxRef = ref();
+const virtualScrollerRef = ref<VirtualScroller>();
 
 const emit = defineEmits([
   "rowSelect"
@@ -80,10 +83,10 @@ const updateGCode = (line: GCodeLine) => {
 };
 
 const scrollToRow = (index: number) => {
-  if (!dataTableRef.value) {
+  if (!virtualScrollerRef.value) {
     return;
   }
-  virtualScroller.scrollToIndex(index);
+  virtualScrollerRef.value.scrollToIndex(index);
 };
 
 const selectRow = (index:number) => {
@@ -93,12 +96,12 @@ const selectRow = (index:number) => {
   index;
 }
 
-const onRowSelection = (item:GCodeLine) => {
+const onRowSelection = (item:any) => {
   emit("rowSelect", item);
 }
 
 onMounted(() => {
-  virtualScroller = (dataTableRef.value as any).getVirtualScrollerRef();
+  virtualScrollerRef.value = (dataTableRef.value as any).getVirtualScrollerRef();
 });
 
 defineExpose({
