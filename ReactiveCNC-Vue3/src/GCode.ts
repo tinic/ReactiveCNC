@@ -2,6 +2,11 @@ import 'highlightjs/styles/github.css';
 import hljs from 'highlightjs';
 import { ref } from "vue";
 
+function appendEllipsis(str:string):string {
+    const ellipsisPosition = 80;
+    return str.substring(0, ellipsisPosition) + ((str.length > ellipsisPosition) ? "…" : "")
+}
+
 function insertSpaces(str:string):string {
     const segments = str.split(/(\([^)]*\))/g);
     for (let i = 0; i < segments.length; i++) {
@@ -41,7 +46,7 @@ export class GCodeLine {
             this.editedcode = gcode;
             this.edited = true;
         }
-        this.highlight = highlight(this.editedcode);
+        this.highlight = highlight(appendEllipsis(this.editedcode));
     }
 
 }
@@ -57,9 +62,17 @@ export class GCode {
     });
     }
 
+    private generateSpaces(size:number) {
+        return " ".repeat(size);
+    }
+
     private padWithZeros(num:number, size:number):string {
         let s = "000000000" + num;
         return s.substr(s.length-size);
+    }
+    
+    public clear() {
+        this.lines.length = 0;
     }
 
     public parseGCode(gcode:string) {
@@ -78,10 +91,10 @@ export class GCode {
         lines.forEach((line: string): void => {
             const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : 0;
             const gcodeLine: GCodeLine = new GCodeLine()
-            gcodeLine.line = lineNumber > 0 ? this.padWithZeros(lineNumber, zeros) : "";
+            gcodeLine.line = lineNumber > 0 ? this.padWithZeros(lineNumber, zeros) : this.generateSpaces(zeros);
             gcodeLine.originalcode = line;
             gcodeLine.editedcode = removeLineNumber(line);
-            gcodeLine.highlight = highlight(line);
+            gcodeLine.highlight = highlight(appendEllipsis(line));
             this.lines.push(gcodeLine);
         });
     }
@@ -93,4 +106,12 @@ export class GCode {
     }
 }
 
-export const gcoderef = ref(new GCode());
+export var gcode = new GCode();
+export const gcodeLinesRef = ref(gcode.lines);
+
+export function loadGCodeFromURL(url:string) {
+    gcode = new GCode();
+    gcode.loadFromURL(url).then(()=> {
+        gcodeLinesRef.value = gcode.lines;
+    });
+}

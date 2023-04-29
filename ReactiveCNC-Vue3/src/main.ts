@@ -10,6 +10,7 @@ import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
+import Button from 'primevue/button';
 import DialogService from 'primevue/dialogservice';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -18,6 +19,7 @@ import Row from 'primevue/row';
 import Checkbox from 'primevue/checkbox';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import InputText from 'primevue/inputtext';
+import VirtualScroller from 'primevue/virtualscroller';
 
 const routes = [{
   path: "/",
@@ -35,6 +37,7 @@ app.use(PrimeVue);
 app.use(DialogService);
 app.use(router)
 
+app.component('Button', Button);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('ColumnGroup', ColumnGroup);
@@ -42,5 +45,6 @@ app.component('Row', Row);
 app.component('Checkbox', Checkbox);
 app.component('TriStateCheckbox', TriStateCheckbox);
 app.component('InputText', InputText);
+app.component('VirtualScroller', VirtualScroller);
 
 app.mount('#app')

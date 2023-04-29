@@ -1,18 +1,27 @@
 <script setup lang="ts">
-import { gcoderef } from "./GCode.ts";
+import { loadGCodeFromURL } from "./GCode.ts";
 import GCodeTable from './components/GCodeTable.vue';
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+
+const gcodeTable = ref();
 
 onMounted(() => {
-  gcoderef.value.loadFromURL("/src/assets/gcode.txt").then(()=> {
-  })
+  loadGCodeFromURL("/src/assets/gcode.txt");
 })
+
+const scrollDown = (() => {
+  gcodeTable.value.scrollToRow(10);
+})
+
 </script>
 
 <template>
   <GCodeTable 
+    ref="gcodeTable"
+    :disabled="false"
     style="width:700px;">
   </GCodeTable>
+  <Button @click="scrollDown" label="ScrollTo(10)"></Button>
 </template>
 
 <style scoped>
