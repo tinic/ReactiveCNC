@@ -10,7 +10,7 @@ onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
 
   setInterval(() => {
-    gcodeTable.value.scrollToRow(line++);
+    //gcodeTable.value.scrollToRow(line++);
     if (line > 25) line = 0;
   },100);
 })
