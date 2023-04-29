@@ -7,7 +7,7 @@ export interface Props {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  disabled: false
+//  disabled: false
 });
 
 function updateGCodeLineEditCode(uuid:string, gcode:string) {
@@ -71,8 +71,8 @@ const updateGCode = ((line:GCodeLine) => {
 
 
 const dataTable = ref(null);
-
 const scrollToRow = ((index:number) => {
+  index;
 })
 
 defineExpose({
