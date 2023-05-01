@@ -1,6 +1,8 @@
 <script setup lang="ts">
+
 import { ref, onMounted } from "vue";
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
+
 import VirtualScroller from "primevue/virtualscroller";
 import DataTable from "primevue/datatable";
 import Checkbox from "primevue/checkbox";
@@ -97,7 +99,6 @@ const onRowSelection = (item:any) => {
 
 onMounted(() => {
   virtualScrollerRef.value = (dataTableRef.value as any).getVirtualScrollerRef();
-  console.log(virtualScrollerRef);
 });
 
 defineExpose({
