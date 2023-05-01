@@ -200,12 +200,7 @@ defineExpose({
   text-align: left;
 }
 
-::v-deep(.editable-cells-table td.p-cell-editing) {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-::v-deep(*) {
+:deep(*) {
   transition: none !important;
 }
 

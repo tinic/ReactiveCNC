@@ -20,6 +20,8 @@ import Checkbox from 'primevue/checkbox';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import InputText from 'primevue/inputtext';
 import VirtualScroller from 'primevue/virtualscroller';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 const routes = [{
   path: "/",
@@ -46,5 +48,7 @@ app.component('Checkbox', Checkbox);
 app.component('TriStateCheckbox', TriStateCheckbox);
 app.component('InputText', InputText);
 app.component('VirtualScroller', VirtualScroller);
+app.component('TabView', TabView);
+app.component('TabPanel', TabPanel);
 
 app.mount('#app')

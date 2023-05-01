@@ -24,21 +24,32 @@ const scrollDown = (() => {
 </script>
 
 <template>
-  <GCodeTable 
-    ref="gcodeTable"
-    :disabled="false"
-    style="width:700px;">
-  </GCodeTable>
+  <TabView>
+    <TabPanel header="PROGRAM">
+      <GCodeTable 
+        ref="gcodeTable"
+        :disabled="false"
+        style="width:700px;">
+      </GCodeTable>
+    </TabPanel>    
+    <TabPanel header="MDI">
+      <div style="width:700px;height:600px"></div>
+    </TabPanel>    
+  </TabView>
   <Button @click="scrollDown" label="ScrollTo(10)"></Button>
 </template>
 
-<style scoped>
+<style>
 .wrapper,
 html,
 body {
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+#app .p-tabview .p-tabview-panels {
+  padding: 0;
 }
 
 .wrapper {
