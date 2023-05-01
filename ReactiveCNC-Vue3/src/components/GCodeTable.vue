@@ -205,6 +205,10 @@ defineExpose({
   padding-bottom: 0;
 }
 
+::v-deep(*) {
+  transition: none !important;
+}
+
 .disabled {
   pointer-events: none;
   opacity: 1;
