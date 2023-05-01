@@ -6,7 +6,7 @@ import { createWebHistory, createRouter } from "vue-router";
 
 import './style.css'
 import 'primevue/resources/primevue.min.css'
-import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'
+import 'primevue/resources/themes/viva-light/theme.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 

@@ -79,27 +79,19 @@ export class GCode {
     public parseGCode(gcode:string) {
         const lines = gcode.split(/\r\n|\r|\n/).filter((str: string) => Boolean(str));
         const hasLineNumbers = lines.some((line: string): boolean => line.startsWith('N'));
-        let zeros: number = 0;
-        if (hasLineNumbers) {
-            const maxLineNumber: number = lines.reduce((max: number, line: string): number => {
-                const lineNumber: number = parseInt(line.match(/\d+/)?.[0] ?? '0');
-                return Math.max(max, lineNumber);
-            }, 0);
-            zeros = Math.floor(Math.log10(maxLineNumber)) + 1;
-        } else {
-            zeros = Math.floor(Math.log10(lines.length)) + 1;
-        }
+        const zeros = hasLineNumbers ?
+            Math.floor(Math.log10(Math.max(...lines.map(line => parseInt(line.match(/\d+/)?.[0] ?? '0'))))) + 1 :
+            Math.floor(Math.log10(lines.length)) + 1;
         lines.forEach((line: string): void => {
-            let index = this.lines ? this.lines.length : 0;
-            const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : index;
+            const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : 0;
             const gcodeLine: GCodeLine = new GCodeLine()
-            gcodeLine.line = line.startsWith('N') ? 
+            gcodeLine.line = hasLineNumbers ? 
                 (lineNumber > 0 ? this.padWithZeros(lineNumber, zeros) : this.generateSpaces(zeros)) : 
-                this.padWithZeros(lineNumber, zeros);
+                this.padWithZeros(this.lines.length, zeros);
             gcodeLine.originalcode = line;
             gcodeLine.editedcode = removeLineNumber(line);
             gcodeLine.highlight = highlight(appendEllipsis(line));
-            gcodeLine.index = index;
+            gcodeLine.index = this.lines.length;
             this.lines.push(gcodeLine);
         });
     }
