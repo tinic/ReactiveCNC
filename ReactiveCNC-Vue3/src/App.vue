@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { loadGCodeFromURL } from "./GCode.ts";
+import { loadGCodeFromURL, gcodeLinesRef } from "./GCode.ts";
 import GCodeTable from './components/GCodeTable.vue';
 import { ref, onMounted } from 'vue';
 
@@ -10,13 +10,15 @@ onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
 
   setInterval(() => {
-    //gcodeTable.value.scrollToRow(line++);
-    if (line > 25) line = 0;
-  },100);
+//    gcodeTable.value.selectRow(line);
+//    line++;
+//    if (line > gcodeLinesRef.value.length) line = 0;
+  },16.666);
 })
 
 const scrollDown = (() => {
-  gcodeTable.value.scrollToRow(10);
+  gcodeTable.value.selectRow(line++);
+  if (line > gcodeLinesRef.value.length) line = 0;
 })
 
 </script>

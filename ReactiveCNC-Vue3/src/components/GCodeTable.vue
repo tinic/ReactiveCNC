@@ -2,12 +2,13 @@
 import { ref, onMounted } from "vue";
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
 import VirtualScroller from "primevue/virtualscroller";
+import DataTable from "primevue/datatable";
+import Checkbox from "primevue/checkbox";
 
 const rowSelectionRef = ref();
-const dataTableRef = ref(null);
+const dataTableRef = ref<DataTable>();
+const virtualScrollerRef = ref<VirtualScroller>();
 const headerTriCheckboxRef = ref(null);
-
-var virtualScroller: VirtualScroller;
 
 const emit = defineEmits([
   "rowSelect"
@@ -15,10 +16,14 @@ const emit = defineEmits([
 
 export interface Props {
   disabled: boolean;
+  cellHeight: number;
+  cellCenterOffset: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  cellHeight: 37,
+  cellCenterOffset: 7
 });
 
 function updateGCodeLineEditCode(uuid: string, gcode: string) {
@@ -32,17 +37,6 @@ function updateGCodeLineEditCode(uuid: string, gcode: string) {
   line.setEditCode(gcode);
 }
 
-function updateGCodeLineActive(uuid: string, value: boolean) {
-  if (!gcodeLinesRef.value) {
-    return;
-  }
-  let line = gcodeLinesRef.value.find((item: GCodeLine) => item.uuid == uuid);
-  if (!line) {
-    return;
-  }
-  line.active = value;
-}
-
 const updateheaderTriCheckbox = () => {
   if (!gcodeLinesRef.value) {
     return;
@@ -53,18 +47,18 @@ const updateheaderTriCheckbox = () => {
       lines.forEach((line) => {
         line.shadowactive = line.active;
         line.active = true;
-        updateGCodeLineActive(line.uuid, line.active);
+        gcodeLinesRef.value[line.index].active = line.active;
       });
     } else {
       lines.forEach((line) => {
         line.active = false;
-        updateGCodeLineActive(line.uuid, line.active);
+        gcodeLinesRef.value[line.index].active = line.active;
       });
     }
   } else {
     lines.forEach((line) => {
       line.active = line.shadowactive;
-      updateGCodeLineActive(line.uuid, line.active);
+      gcodeLinesRef.value[line.index].active = line.active;
     });
   }
 };
@@ -72,7 +66,7 @@ const updateheaderTriCheckbox = () => {
 const updateLineCheckbox = (line: GCodeLine) => {
   line.shadowactive = line.active;
   headerTriCheckboxRef.value = null;
-  updateGCodeLineActive(line.uuid, line.active);
+  gcodeLinesRef.value[line.index].active = line.active;
 };
 
 const updateGCode = (line: GCodeLine) => {
@@ -80,36 +74,40 @@ const updateGCode = (line: GCodeLine) => {
 };
 
 const scrollToRow = (index: number) => {
-  if (!dataTableRef.value) {
+  if (!gcodeLinesRef.value) {
     return;
   }
-  virtualScroller.scrollToIndex(index);
+  if (!virtualScrollerRef.value) {
+    return;
+  }
+  virtualScrollerRef.value.scrollTo({left:0, top:index * props.cellHeight});
 };
 
 const selectRow = (index:number) => {
   if (!dataTableRef.value) {
     return;
   }
-  index;
+  scrollToRow(Math.max(0,index - props.cellCenterOffset));
+  rowSelectionRef.value = [gcodeLinesRef.value[index]];
 }
 
-const onRowSelection = (item:GCodeLine) => {
+const onRowSelection = (item:any) => {
   emit("rowSelect", item);
 }
 
 onMounted(() => {
-  virtualScroller = (dataTableRef.value as any).getVirtualScrollerRef();
+  virtualScrollerRef.value = (dataTableRef.value as any).getVirtualScrollerRef();
+  console.log(virtualScrollerRef);
 });
 
 defineExpose({
   scrollToRow,
   selectRow
 });
-
 </script>
 
 <template>
-  <div :class="{ disabled: props.disabled }">
+  <div ref="dataTableContainerRef" :class="{ disabled: props.disabled }">
     <DataTable
       ref="dataTableRef"
       v-model:selection="rowSelectionRef"
@@ -120,10 +118,10 @@ defineExpose({
       tableClass="editable-cells-table"
       showGridlines
       scrollable
-      scrollHeight="20em"
-      :virtualScrollerOptions="{ itemSize: 30 }"
+      scrollHeight="600px"
       selectionMode="single"
       dataKey="uuid"
+      :virtualScrollerOptions="{ itemSize: props.cellHeight }"
     >
       <Column
         field="active"

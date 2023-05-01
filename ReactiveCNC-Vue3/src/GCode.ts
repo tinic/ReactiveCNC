@@ -37,6 +37,7 @@ export class GCodeLine {
     public shadowactive:boolean = false;
     public uuid:string = crypto.randomUUID();
     public edited:boolean = false;
+    public index:number = 0;
 
     public setEditCode(gcode:string) {
         if (gcode == null || gcode.length == 0) {
@@ -89,12 +90,14 @@ export class GCode {
             zeros = Math.floor(Math.log10(lines.length)) + 1;
         }
         lines.forEach((line: string): void => {
-            const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : 0;
+            let index = this.lines ? this.lines.length : 0;
+            const lineNumber: number = line.startsWith('N') ? parseInt(line.match(/\d+/)?.[0] ?? '0') : index;
             const gcodeLine: GCodeLine = new GCodeLine()
             gcodeLine.line = lineNumber > 0 ? this.padWithZeros(lineNumber, zeros) : this.generateSpaces(zeros);
             gcodeLine.originalcode = line;
             gcodeLine.editedcode = removeLineNumber(line);
             gcodeLine.highlight = highlight(appendEllipsis(line));
+            gcodeLine.index = index;
             this.lines.push(gcodeLine);
         });
     }
@@ -107,7 +110,7 @@ export class GCode {
 }
 
 export var gcode = new GCode();
-export const gcodeLinesRef = ref(gcode.lines);
+export const gcodeLinesRef = ref<Array<GCodeLine>>(gcode.lines);
 
 export function loadGCodeFromURL(url:string) {
     gcode = new GCode();
