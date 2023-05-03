@@ -2,6 +2,7 @@
 import { loadGCodeFromURL, gcodeLinesRef } from "./GCode.ts";
 import GCodeTable from './components/GCodeTable.vue';
 import MDITable from './components/MDITable.vue'
+import JogPanel from './components/JogPanel.vue'
 import { ref, onMounted } from 'vue';
 
 const gcodeTable = ref();
@@ -53,6 +54,8 @@ const scrollDown = (() => {
         <span>JOG</span>
       </template>
       <div style="width:600px;height:400px">
+        <JogPanel>
+        </JogPanel>
       </div>
     </TabPanel>    
   </TabView>
