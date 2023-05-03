@@ -108,7 +108,7 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="dataTableContainerRef" :class="{ disabled: props.disabled }">
+  <div :class="{ disabled: props.disabled }">
     <DataTable
       ref="dataTableRef"
       v-model:selection="rowSelectionRef"
@@ -119,7 +119,7 @@ defineExpose({
       tableClass="editable-cells-table"
       showGridlines
       scrollable
-      scrollHeight="600px"
+      scrollHeight="400px"
       selectionMode="single"
       dataKey="uuid"
       :virtualScrollerOptions="{ itemSize: props.cellHeight }"
@@ -166,7 +166,7 @@ defineExpose({
       </Column>
       <Column
         field="highlight"
-        header="G-Code"
+        header="G-code"
         class="m-0 p-0 pl-2 pr-0 w-full"
       >
         <template #editor="props: any">
@@ -189,7 +189,7 @@ defineExpose({
 .gridfont {
   font-family: "iosevka";
   font-weight: regular;
-  font-size: 1.5em;
+  font-size: 1.25em;
   text-align: left;
 }
 

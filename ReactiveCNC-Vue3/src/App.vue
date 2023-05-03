@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { loadGCodeFromURL, gcodeLinesRef } from "./GCode.ts";
 import GCodeTable from './components/GCodeTable.vue';
+import MDITable from './components/MDITable.vue'
 import { ref, onMounted } from 'vue';
 
 const gcodeTable = ref();
@@ -25,15 +26,34 @@ const scrollDown = (() => {
 
 <template>
   <TabView>
-    <TabPanel header="PROGRAM">
+    <TabPanel>
+      <template #header>
+        <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 2rem"/>
+        <span>PROGRAM</span>
+      </template>
       <GCodeTable 
         ref="gcodeTable"
         :disabled="false"
-        style="width:700px;">
+        style="width:600px;">
       </GCodeTable>
     </TabPanel>    
-    <TabPanel header="MDI">
-      <div style="width:700px;height:600px"></div>
+    <TabPanel>
+      <template #header>
+        <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 2rem"/>
+        <span>MDI</span>
+      </template>
+      <div style="width:600px;height:400px">
+        <MDITable>
+        </MDITable>
+      </div>
+    </TabPanel>    
+    <TabPanel>
+      <template #header>
+        <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 2rem"/>
+        <span>JOG</span>
+      </template>
+      <div style="width:600px;height:400px">
+      </div>
     </TabPanel>    
   </TabView>
   <Button @click="scrollDown" label="ScrollTo(10)"></Button>
@@ -48,8 +68,16 @@ body {
   margin: 0;
 }
 
-#app .p-tabview .p-tabview-panels {
+#app .p-tabview-header {
+  font-family: "iosevka";
+  font-weight: regular;
+  font-size: 1.5em;
   padding: 0;
+  margin: 0;
+}
+
+#app .p-tabview .p-tabview-panels {
+  padding: 0.5em;
 }
 
 .wrapper {
