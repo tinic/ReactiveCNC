@@ -29,37 +29,36 @@ const scrollDown = (() => {
   <TabView>
     <TabPanel>
       <template #header>
-        <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 2rem"/>
+        <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem"/>
         <span>PROGRAM</span>
       </template>
       <GCodeTable 
         ref="gcodeTable"
         :disabled="false"
-        style="width:600px;">
+        style="width:600px;height:25em;">
       </GCodeTable>
     </TabPanel>    
     <TabPanel>
       <template #header>
-        <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 2rem"/>
+        <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 1.5rem"/>
         <span>MDI</span>
       </template>
-      <div style="width:600px;height:400px">
+      <div style="width:600px;height:25em;">
         <MDITable>
         </MDITable>
       </div>
     </TabPanel>    
     <TabPanel>
       <template #header>
-        <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 2rem"/>
+        <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 1.5rem"/>
         <span>JOG</span>
       </template>
-      <div style="width:600px;height:400px">
+      <div style="width:600px;height:25em;">
         <JogPanel>
         </JogPanel>
       </div>
     </TabPanel>    
   </TabView>
-  <Button @click="scrollDown" label="ScrollTo(10)"></Button>
 </template>
 
 <style>
@@ -72,7 +71,6 @@ body {
 }
 
 #app .p-tabview-header {
-  font-family: "iosevka";
   font-weight: regular;
   font-size: 1.5em;
   padding: 0;
@@ -80,7 +78,7 @@ body {
 }
 
 #app .p-tabview .p-tabview-panels {
-  padding: 0.5em;
+  padding: 0em;
 }
 
 .wrapper {

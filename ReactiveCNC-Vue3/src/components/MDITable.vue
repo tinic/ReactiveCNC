@@ -40,10 +40,9 @@ const onRowSelection = (item:any) => {
       class="gridfont"
       showGridlines
       scrollable
-      scrollHeight="550px"
+      scrollHeight="14em"
       selectionMode="single"
-      dataKey="uuid"
-      style="height:550px">
+      dataKey="uuid">
       <Column
         field="highlight"
         header="G-Code"
@@ -53,15 +52,14 @@ const onRowSelection = (item:any) => {
         </template>
       </Column>
     </DataTable>
-
-        <div class="flex flex-auto">
-            <InputText 
-                class="w-full editfont"
-                v-model="currentMdiLine"
-                @change="updateCurrentMdiLine()"
-            ></InputText>
-            <Button label="RUN" class="flex pl-6 pr-6"></Button>
-        </div>
+    <div class="flex flex-auto" style="height:3em">
+        <InputText 
+            class="w-full editfont"
+            v-model="currentMdiLine"
+            @change="updateCurrentMdiLine()"
+        ></InputText>
+        <Button label="RUN" class="flex pl-6 pr-6"></Button>
+    </div>
     </div>
 </template>
 

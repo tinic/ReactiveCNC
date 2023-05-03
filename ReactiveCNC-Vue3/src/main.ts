@@ -22,6 +22,8 @@ import InputText from 'primevue/inputtext';
 import VirtualScroller from 'primevue/virtualscroller';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import Knob from 'primevue/knob';
+import SelectButton from 'primevue/selectbutton';
 
 const routes = [{
   path: "/",
@@ -50,5 +52,7 @@ app.component('InputText', InputText);
 app.component('VirtualScroller', VirtualScroller);
 app.component('TabView', TabView);
 app.component('TabPanel', TabPanel);
+app.component('Knob', Knob);
+app.component('SelectButton', SelectButton);
 
 app.mount('#app')

@@ -114,12 +114,11 @@ defineExpose({
       v-model:selection="rowSelectionRef"
       @update:selection="onRowSelection"
       :value="gcodeLinesRef"
-      class="gridfont"
       editMode="cell"
       tableClass="editable-cells-table"
       showGridlines
       scrollable
-      scrollHeight="400px"
+      scrollHeight="24em"
       selectionMode="single"
       dataKey="uuid"
       :virtualScrollerOptions="{ itemSize: props.cellHeight }"
@@ -156,29 +155,33 @@ defineExpose({
       </Column>
       <Column
         field="line"
-        header="Line"
         class="m-0 p-0 pl-3 pr-3 w-min"
         style="width: 5em"
       >
+        <template #header>
+          Line
+        </template>
         <template #body="props: any">
-          <div style="text-align: center">{{ props.data.line }}</div>
+          <div style="text-align: center" class="gridfont">{{ props.data.line }}</div>
         </template>
       </Column>
       <Column
         field="highlight"
-        header="G-code"
         class="m-0 p-0 pl-2 pr-0 w-full"
       >
+        <template #header>
+          G-code
+        </template>
         <template #editor="props: any">
           <InputText
             v-model="props.data.editedcode"
             @change="updateGCode(props.data as GCodeLine)"
-            class="editfont w-full m-0 p-0"
+            class="gridfont w-full m-0 p-0"
             autofocus
           />
         </template>
         <template #body="props: any">
-          <div v-html="props.data.highlight"></div>
+          <div v-html="props.data.highlight" class="gridfont"></div>
         </template>
       </Column>
     </DataTable>
@@ -189,14 +192,7 @@ defineExpose({
 .gridfont {
   font-family: "iosevka";
   font-weight: regular;
-  font-size: 1.25em;
-  text-align: left;
-}
-
-.editfont {
-  font-family: "iosevka";
-  font-weight: regular;
-  font-size: 1em;
+  font-size: 1.5em;
   text-align: left;
 }
 
