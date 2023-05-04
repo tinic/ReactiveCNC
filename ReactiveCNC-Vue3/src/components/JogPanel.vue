@@ -49,7 +49,7 @@ const jogMode = ref(jogModeOptions.value[0]);
         <div class="flex ml-5">
             <div>
             <SelectButton v-model="jogMode" :options="jogModeOptions" optionLabel="label" dataKey="value" aria-labelledby="custom">
-                <template #option="slotProps">
+                <template #option="slotProps:any">
                     <div v-html="slotProps.option.label"></div>                    
                 </template>
             </SelectButton>

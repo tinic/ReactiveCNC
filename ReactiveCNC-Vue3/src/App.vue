@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { loadGCodeFromURL, gcodeLinesRef } from "./GCode.ts";
+import { loadGCodeFromURL } from "./GCode.ts";
 import GCodeTable from './components/GCodeTable.vue';
 import MDITable from './components/MDITable.vue'
 import JogPanel from './components/JogPanel.vue'
 import { ref, onMounted } from 'vue';
 
 const gcodeTable = ref();
-var line = 0;
+//var line = 0;
 
 onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
@@ -18,10 +18,10 @@ onMounted(() => {
   },16.666);
 })
 
-const scrollDown = (() => {
-  gcodeTable.value.selectRow(line++);
-  if (line > gcodeLinesRef.value.length) line = 0;
-})
+//const scrollDown = (() => {
+//  gcodeTable.value.selectRow(line++);
+//  if (line > gcodeLinesRef.value.length) line = 0;
+//})
 
 </script>
 

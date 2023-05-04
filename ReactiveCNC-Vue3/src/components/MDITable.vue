@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import { ref, onMounted } from "vue";
-import { mdiLinesRef, MDILine, mdi } from "../MDI.ts";
+import { ref } from "vue";
+import { mdiLinesRef, MDILine } from "../MDI.ts";
 import DataTable from "primevue/datatable";
 
 const rowSelectionRef = ref();
