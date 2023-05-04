@@ -1,15 +1,15 @@
 <script setup lang="ts">
+
 import GCodePanel from "./GCodePanel.vue";
 import MDIPanel from "./MDIPanel.vue";
 import JogPanel from "./JogPanel.vue";
-import { ref } from "vue";
 
-const gcodeTable = ref();
+import { ref, onMounted } from "vue";
+
 const jogPanelRef = ref();
 const activeIndex = ref(0);
 
 const onActiveIndex = () => {
-  console.log("onActiveIndex " + activeIndex.value);
   switch (activeIndex.value) {
     case 0:
       jogPanelRef.value.removeKeyboardHandler();
@@ -22,6 +22,10 @@ const onActiveIndex = () => {
       break;
   }
 };
+
+onMounted(() => {
+  onActiveIndex();
+});
 </script>
 
 <template>
@@ -35,7 +39,6 @@ const onActiveIndex = () => {
         <span>PROGRAM</span>
       </template>
       <GCodePanel
-        ref="gcodeTable"
         :disabled="false"
         style="width: 600px; height: 25em"
       >
