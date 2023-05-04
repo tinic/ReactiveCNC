@@ -1,70 +1,70 @@
 <script setup lang="ts">
 import { loadGCodeFromURL } from "./GCode.ts";
-import GCodeTable from './components/GCodeTable.vue';
-import MDITable from './components/MDITable.vue'
-import JogPanel from './components/JogPanel.vue'
-import { ref, onMounted } from 'vue';
+import GCodeTable from "./components/GCodeTable.vue";
+import MDITable from "./components/MDITable.vue";
+import JogPanel from "./components/JogPanel.vue";
+import { ref, onMounted } from "vue";
 
 const gcodeTable = ref();
-//var line = 0;
 
 onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
+});
 
-  setInterval(() => {
-//    gcodeTable.value.selectRow(line);
-//    line++;
-//    if (line > gcodeLinesRef.value.length) line = 0;
-  },16.666);
-})
+const jogPanelRef = ref();
 
-//const scrollDown = (() => {
-//  gcodeTable.value.selectRow(line++);
-//  if (line > gcodeLinesRef.value.length) line = 0;
-//})
-
-const activeIndex = ref(0)
+const activeIndex = ref(0);
 const onActiveIndex = () => {
-}
-
+  console.log("onActiveIndex " + activeIndex.value);
+  switch (activeIndex.value) {
+    case 0:
+      jogPanelRef.value.removeKeyboardHandler();
+      break;
+    case 1:
+      jogPanelRef.value.removeKeyboardHandler();
+      break;
+    case 2:
+      jogPanelRef.value.installKeyboardHandler();
+      break;
+  }
+};
 </script>
 
 <template>
   <TabView
-   v-model:activeIndex="activeIndex"
-   @update:activeIndex="onActiveIndex"
+    v-model:activeIndex="activeIndex"
+    @update:activeIndex="onActiveIndex"
   >
     <TabPanel>
       <template #header>
-        <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem"/>
+        <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>PROGRAM</span>
       </template>
-      <GCodeTable 
+      <GCodeTable
         ref="gcodeTable"
         :disabled="false"
-        style="width:600px;height:25em;">
+        style="width: 600px; height: 25em"
+      >
       </GCodeTable>
-    </TabPanel>    
+    </TabPanel>
     <TabPanel>
       <template #header>
-        <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 1.5rem"/>
+        <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>MDI</span>
       </template>
-      <div style="width:600px;height:25em;">
-        <MDITable>
-        </MDITable>
+      <div style="width: 600px; height: 25em">
+        <MDITable> </MDITable>
       </div>
-    </TabPanel>    
+    </TabPanel>
     <TabPanel>
       <template #header>
-        <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 1.5rem"/>
+        <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>JOG</span>
       </template>
-      <div style="width:600px;height:25em;">
-        <JogPanel>
-        </JogPanel>
+      <div style="width: 600px; height: 25em">
+        <JogPanel ref="jogPanelRef"> </JogPanel>
       </div>
-    </TabPanel>    
+    </TabPanel>
   </TabView>
 </template>
 

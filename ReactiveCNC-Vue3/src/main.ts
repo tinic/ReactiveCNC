@@ -31,6 +31,16 @@ const routes = [{
   component: App,
 }];
 
+(HTMLAnchorElement.prototype as any).originalAddEventListener = HTMLAnchorElement.prototype.addEventListener;
+HTMLAnchorElement.prototype.addEventListener = function(a:any,b:any,c:any){
+  if (a == "keydown" ||
+      a == "keyup") {
+    // Prevent PrimeVue from using key events.
+    return;
+  }
+  (this as any).originalAddEventListener(a,b,c); 
+};
+
 const router = createRouter({
   history: createWebHistory(),
   routes
