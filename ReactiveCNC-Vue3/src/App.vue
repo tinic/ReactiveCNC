@@ -23,10 +23,17 @@ onMounted(() => {
 //  if (line > gcodeLinesRef.value.length) line = 0;
 //})
 
+const activeIndex = ref(0)
+const onActiveIndex = () => {
+}
+
 </script>
 
 <template>
-  <TabView>
+  <TabView
+   v-model:activeIndex="activeIndex"
+   @update:activeIndex="onActiveIndex"
+  >
     <TabPanel>
       <template #header>
         <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem"/>

@@ -101,6 +101,14 @@ onMounted(() => {
   virtualScrollerRef.value = (dataTableRef.value as any).getVirtualScrollerRef();
 });
 
+const onKeyUp = () => {
+  console.log("onKeyUp");
+}
+
+const onKeyDown = () => {
+  console.log("onKeyDown");
+}
+
 defineExpose({
   scrollToRow,
   selectRow
@@ -114,6 +122,8 @@ defineExpose({
       v-model:selection="rowSelectionRef"
       @update:selection="onRowSelection"
       :value="gcodeLinesRef"
+      v-on:keyup.up="onKeyUp"
+      v-on:keyup.down="onKeyDown"
       editMode="cell"
       tableClass="editable-cells-table"
       showGridlines
@@ -185,7 +195,7 @@ defineExpose({
         </template>
       </Column>
     </DataTable>
-  </div>
+   </div>
 </template>
 
 <style scoped>
