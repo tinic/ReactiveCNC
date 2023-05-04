@@ -37,7 +37,6 @@ const jogSpeedChanged = () => {
 };
 
 const windowKeyDown = (event: any) => {
-  console.log(event);
   if (
     event.key.startsWith("Arrow") ||
     event.key.startsWith("Page") ||
@@ -62,16 +61,17 @@ const windowKeyDown = (event: any) => {
         break;
       case "PageUp":
         break;
+      case "[":
       case "Insert":
         jogSpeed.value = Math.max(1, jogSpeed.value - 1);
         jogSpeedSync();
         break;
+      case "]":
       case "Home":
         jogSpeed.value = Math.min(100, jogSpeed.value + 1);
         jogSpeedSync();
         break;
       case "Delete":
-      case "[":
         jogSpeed.value = Math.max(
           1,
           jogSpeed.value - (jogSpeed.value % 10) - 10
@@ -79,7 +79,6 @@ const windowKeyDown = (event: any) => {
         jogSpeedSync();
         break;
       case "End":
-      case "]":
         jogSpeed.value = Math.min(
           100,
           jogSpeed.value - (jogSpeed.value % 10) + 10

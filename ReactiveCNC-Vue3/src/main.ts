@@ -32,13 +32,13 @@ const routes = [{
 }];
 
 (HTMLAnchorElement.prototype as any).originalAddEventListener = HTMLAnchorElement.prototype.addEventListener;
-HTMLAnchorElement.prototype.addEventListener = function(a:any,b:any,c:any){
+HTMLAnchorElement.prototype.addEventListener = function (a: any, b: any, c: any) {
   if (a == "keydown" ||
-      a == "keyup") {
+    a == "keyup") {
     // Prevent PrimeVue from using key events.
     return;
   }
-  (this as any).originalAddEventListener(a,b,c); 
+  (this as any).originalAddEventListener(a, b, c);
 };
 
 const router = createRouter({

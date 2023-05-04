@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { ref, onMounted } from "vue";
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
 
@@ -12,9 +11,7 @@ const dataTableRef = ref<DataTable>();
 const virtualScrollerRef = ref<VirtualScroller>();
 const headerTriCheckboxRef = ref(null);
 
-const emit = defineEmits([
-  "rowSelect"
-]);
+const emit = defineEmits(["rowSelect"]);
 
 export interface Props {
   disabled: boolean;
@@ -25,7 +22,7 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   cellHeight: 37,
-  cellCenterOffset: 7
+  cellCenterOffset: 7,
 });
 
 function updateGCodeLineEditCode(uuid: string, gcode: string) {
@@ -82,36 +79,38 @@ const scrollToRow = (index: number) => {
   if (!virtualScrollerRef.value) {
     return;
   }
-  virtualScrollerRef.value.scrollTo({left:0, top:index * props.cellHeight});
+  virtualScrollerRef.value.scrollTo({ left: 0, top: index * props.cellHeight });
 };
 
-const selectRow = (index:number) => {
+const selectRow = (index: number) => {
   if (!dataTableRef.value) {
     return;
   }
-  scrollToRow(Math.max(0,index - props.cellCenterOffset));
+  scrollToRow(Math.max(0, index - props.cellCenterOffset));
   rowSelectionRef.value = [gcodeLinesRef.value[index]];
-}
+};
 
-const onRowSelection = (item:any) => {
+const onRowSelection = (item: any) => {
   emit("rowSelect", item);
-}
+};
 
 onMounted(() => {
-  virtualScrollerRef.value = (dataTableRef.value as any).getVirtualScrollerRef();
+  virtualScrollerRef.value = (
+    dataTableRef.value as any
+  ).getVirtualScrollerRef();
 });
 
 const onKeyUp = () => {
   console.log("onKeyUp");
-}
+};
 
 const onKeyDown = () => {
   console.log("onKeyDown");
-}
+};
 
 defineExpose({
   scrollToRow,
-  selectRow
+  selectRow,
 });
 </script>
 
@@ -163,25 +162,16 @@ defineExpose({
           />
         </template>
       </Column>
-      <Column
-        field="line"
-        class="m-0 p-0 pl-3 pr-3 w-min"
-        style="width: 5em"
-      >
-        <template #header>
-          Line
-        </template>
+      <Column field="line" class="m-0 p-0 pl-3 pr-3 w-min" style="width: 5em">
+        <template #header> Line </template>
         <template #body="props: any">
-          <div style="text-align: center" class="gridfont">{{ props.data.line }}</div>
+          <div style="text-align: center" class="gridfont">
+            {{ props.data.line }}
+          </div>
         </template>
       </Column>
-      <Column
-        field="highlight"
-        class="m-0 p-0 pl-2 pr-0 w-full"
-      >
-        <template #header>
-          G-code
-        </template>
+      <Column field="highlight" class="m-0 p-0 pl-2 pr-0 w-full">
+        <template #header> G-code </template>
         <template #editor="props: any">
           <InputText
             v-model="props.data.editedcode"
@@ -195,7 +185,7 @@ defineExpose({
         </template>
       </Column>
     </DataTable>
-   </div>
+  </div>
 </template>
 
 <style scoped>
