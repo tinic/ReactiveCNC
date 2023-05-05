@@ -32,14 +32,21 @@ const routes = [{
 }];
 
 (Element.prototype as any).originalAddEventListener = Element.prototype.addEventListener;
-Element.prototype.addEventListener = function (a: any, b: any, c: any) {
-  if (a == "keydown" ||
-      a == "keyup") {
-    // Prevent PrimeVue from using key events.
+Element.prototype.addEventListener = function (type: any, listener: any, options: any) {
+  if (type == "keydown" ||
+      type == "keyup") {
+    // Prevent PrimeVue from using key events when jog panel is up.
+    let patchEventListener = (event:any) => {
+      if ((Element.prototype as any).shadowKeyEvents) {
+        return;
+      }
+      listener(event);
+    }
+    (this as any).originalAddEventListener(type, patchEventListener, options);
     return;
   }
-  (this as any).originalAddEventListener(a, b, c);
-};
+  (this as any).originalAddEventListener(type, listener, options);
+}
 
 const router = createRouter({
   history: createWebHistory(),

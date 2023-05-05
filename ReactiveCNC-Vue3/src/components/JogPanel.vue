@@ -160,6 +160,7 @@ const windowKeyUp = (event: any) => {
 
 const installKeyboardHandler = () => {
   console.log("installKeyboardHandler");
+  (Element.prototype as any).shadowKeyEvents = true;
   document.addEventListener("keydown", windowKeyDown);
   document.addEventListener("keyup", windowKeyUp);
 };
@@ -168,6 +169,7 @@ const removeKeyboardHandler = () => {
   console.log("removeKeyboardHandler");
   document.removeEventListener("keydown", windowKeyDown);
   document.removeEventListener("keyup", windowKeyUp);
+  (Element.prototype as any).shadowKeyEvents = false;
 };
 
 defineExpose({
