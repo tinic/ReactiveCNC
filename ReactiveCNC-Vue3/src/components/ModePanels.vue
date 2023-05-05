@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import GCodePanel from "./GCodePanel.vue";
 import MDIPanel from "./MDIPanel.vue";
 import JogPanel from "./JogPanel.vue";
@@ -23,6 +22,10 @@ const onActiveIndex = () => {
   }
 };
 
+const onJog = ((axis:string, state:string) =>  {
+  console.log(axis + " " + state);
+});
+
 onMounted(() => {
   onActiveIndex();
 });
@@ -38,10 +41,7 @@ onMounted(() => {
         <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>PROGRAM</span>
       </template>
-      <GCodePanel
-        :disabled="false"
-        style="width: 600px; height: 25em"
-      >
+      <GCodePanel :disabled="false" style="width: 600px; height: 25em">
       </GCodePanel>
     </TabPanel>
     <TabPanel>
@@ -59,7 +59,7 @@ onMounted(() => {
         <span>JOG</span>
       </template>
       <div style="width: 600px; height: 25em">
-        <JogPanel ref="jogPanelRef"> </JogPanel>
+        <JogPanel ref="jogPanelRef" @jog="onJog"> </JogPanel>
       </div>
     </TabPanel>
   </TabView>

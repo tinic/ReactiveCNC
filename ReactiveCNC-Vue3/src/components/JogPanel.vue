@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+const emit = defineEmits(["jog"]);
+
+const jogState: Array<boolean> = [];
 const jogSpeedForMode: Array<number> = [50, 50];
 
 const jogSpeed = ref(50);
@@ -59,21 +62,45 @@ const windowKeyDown = (event: any) => {
     switch (event.key) {
       case "a":
       case "ArrowLeft":
+        if (!jogState[0]) {
+          jogState[0] = true;
+          emit("jog", "x-", "start");
+        }
         break;
       case "d":
       case "ArrowRight":
+        if (!jogState[1]) {
+          jogState[1] = true;
+          emit("jog", "x+", "start");
+        }
         break;
       case "s":
       case "ArrowDown":
+        if (!jogState[2]) {
+          jogState[2] = true;
+          emit("jog", "y+", "start");
+        }
         break;
       case "w":
       case "ArrowUp":
+        if (!jogState[3]) {
+          jogState[3] = true;
+          emit("jog", "x-", "start");
+        }
         break;
       case "f":
       case "PageDown":
+        if (!jogState[4]) {
+          jogState[4] = true;
+          emit("jog", "z-", "start");
+        }
         break;
       case "r":
       case "PageUp":
+        if (!jogState[5]) {
+          jogState[5] = true;
+          emit("jog", "", "start");
+        }
         break;
       case "[":
       case "Insert":
@@ -85,7 +112,7 @@ const windowKeyDown = (event: any) => {
         jogSpeed.value = Math.min(100, jogSpeed.value + 1);
         jogSpeedSync();
         break;
-      case '-':
+      case "-":
       case "Delete":
         jogSpeed.value = Math.max(
           1,
@@ -93,7 +120,7 @@ const windowKeyDown = (event: any) => {
         );
         jogSpeedSync();
         break;
-      case '=':
+      case "=":
       case "End":
         jogSpeed.value = Math.min(
           100,
@@ -137,21 +164,45 @@ const windowKeyUp = (event: any) => {
     switch (event.key) {
       case "a":
       case "ArrowLeft":
+        if (jogState[0]) {
+          jogState[0] = false;
+          emit("jog", "x-", "stop");
+        }
         break;
       case "d":
       case "ArrowRight":
+        if (jogState[1]) {
+          jogState[1] = false;
+          emit("jog", "x+", "stop");
+        }
         break;
       case "s":
       case "ArrowDown":
+        if (jogState[2]) {
+          jogState[2] = false;
+          emit("jog", "y+", "stop");
+        }
         break;
       case "w":
       case "ArrowUp":
+        if (jogState[3]) {
+          jogState[3] = false;
+          emit("jog", "x-", "stop");
+        }
         break;
       case "f":
       case "PageDown":
+        if (jogState[4]) {
+          jogState[4] = false;
+          emit("jog", "z-", "stop");
+        }
         break;
       case "r":
       case "PageUp":
+        if (jogState[5]) {
+          jogState[5] = false;
+          emit("jog", "z+", "stop");
+        }
         break;
     }
     event.stopPropagation();
@@ -170,6 +221,14 @@ const removeKeyboardHandler = () => {
   document.removeEventListener("keyup", windowKeyUp);
 };
 
+const mouseDown = (axis: string) => {
+  emit("jog", axis, "start");
+};
+
+const mouseUp = (axis: string) => {
+  emit("jog", axis, "stop");
+};
+
 defineExpose({
   installKeyboardHandler,
   removeKeyboardHandler,
@@ -181,25 +240,55 @@ defineExpose({
     <div class="grid w-full">
       <div class="col-3"></div>
       <div class="col-3">
-        <Button label="Y-" class="w-full h-full"></Button>
+        <Button
+          label="Y-"
+          class="w-full h-full"
+          @mousedown="mouseDown('y-')"
+          @mouseup="mouseUp('y-')"
+        ></Button>
       </div>
       <div class="col-3"></div>
       <div class="col-3">
-        <Button label="Z+" class="w-full h-full"></Button>
+        <Button
+          label="Z+"
+          class="w-full h-full"
+          @mousedown="mouseDown('z+')"
+          @mouseup="mouseUp('z+')"
+        ></Button>
       </div>
       <div class="col-3">
-        <Button label="X-" class="w-full h-full"></Button>
+        <Button
+          label="X-"
+          class="w-full h-full"
+          @mousedown="mouseDown('x-')"
+          @mouseup="mouseUp('x-')"
+        ></Button>
       </div>
       <div class="col-3"></div>
       <div class="col-3">
-        <Button label="X+" class="w-full h-full"></Button>
+        <Button
+          label="X+"
+          class="w-full h-full"
+          @mousedown="mouseDown('x+')"
+          @mouseup="mouseUp('x+')"
+        ></Button>
       </div>
       <div class="col-3">
-        <Button label="Z-" class="w-full h-full"></Button>
+        <Button
+          label="Z-"
+          class="w-full h-full"
+          @mousedown="mouseDown('z-')"
+          @mouseup="mouseUp('z-')"
+        ></Button>
       </div>
       <div class="col-3"></div>
       <div class="col-3">
-        <Button label="Y+" class="w-full h-full"></Button>
+        <Button
+          label="Y+"
+          class="w-full h-full"
+          @mousedown="mouseDown('y+')"
+          @mouseup="mouseUp('y+')"
+        ></Button>
       </div>
       <div class="col-3"></div>
       <div class="col-3"></div>
