@@ -5,8 +5,8 @@ const jogSpeedForMode: Array<number> = [50, 50];
 
 const jogSpeed = ref(50);
 const jogModeOptions = ref([
-  { label: "<div style='font-size:2em'>🐢</div>", value: "Slow" },
-  { label: "<div style='font-size:2em'>🐇</div>", value: "Fast" },
+  { label: "<div style='font-size:1.75em'>🐢</div>", value: "Slow" },
+  { label: "<div style='font-size:1.75em'>🐇</div>", value: "Fast" },
 ]);
 const jogMode = ref(jogModeOptions.value[0]);
 function jogModeSync() {
@@ -45,6 +45,8 @@ const windowKeyDown = (event: any) => {
     event.key == "Delete" ||
     event.key == "Home" ||
     event.key == "End" ||
+    event.key == "-" ||
+    event.key == "=" ||
     event.key == "[" ||
     event.key == "]"
   ) {
@@ -71,6 +73,7 @@ const windowKeyDown = (event: any) => {
         jogSpeed.value = Math.min(100, jogSpeed.value + 1);
         jogSpeedSync();
         break;
+      case '-':
       case "Delete":
         jogSpeed.value = Math.max(
           1,
@@ -78,6 +81,7 @@ const windowKeyDown = (event: any) => {
         );
         jogSpeedSync();
         break;
+      case '=':
       case "End":
         jogSpeed.value = Math.min(
           100,
@@ -94,7 +98,7 @@ const windowKeyDown = (event: any) => {
         jogModeSync();
         break;
     }
-    event.preventDefault();
+    event.stopPropagation();
   }
 };
 
@@ -107,30 +111,12 @@ const windowKeyUp = (event: any) => {
     event.key == "Delete" ||
     event.key == "Home" ||
     event.key == "End" ||
+    event.key == "-" ||
+    event.key == "=" ||
     event.key == "[" ||
     event.key == "]"
   ) {
-    switch (event.key) {
-      case "ArrowLeft":
-        break;
-      case "ArrowRight":
-        break;
-      case "ArrowDown":
-        break;
-      case "ArrowUp":
-        break;
-      case "PageDown":
-        break;
-      case "PageUp":
-        break;
-      case "[":
-        break;
-      case "]":
-        break;
-      case " ":
-        break;
-    }
-    event.preventDefault();
+    event.stopPropagation();
   }
 };
 

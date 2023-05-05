@@ -31,10 +31,10 @@ const routes = [{
   component: App,
 }];
 
-(HTMLAnchorElement.prototype as any).originalAddEventListener = HTMLAnchorElement.prototype.addEventListener;
-HTMLAnchorElement.prototype.addEventListener = function (a: any, b: any, c: any) {
+(Element.prototype as any).originalAddEventListener = Element.prototype.addEventListener;
+Element.prototype.addEventListener = function (a: any, b: any, c: any) {
   if (a == "keydown" ||
-    a == "keyup") {
+      a == "keyup") {
     // Prevent PrimeVue from using key events.
     return;
   }

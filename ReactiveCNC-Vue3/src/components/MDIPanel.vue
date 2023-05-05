@@ -63,7 +63,7 @@ const onDeleteKey = () => {
           v-model="currentMdiLine"
           @change="updateCurrentMdiLine()"
         ></InputText>
-        <Button label="RUN" class="flex pl-6 pr-6"></Button>
+        <Button label="RUN" class="flex ml-2 pl-6 pr-6"></Button>
       </div>
     </div>
   </div>
