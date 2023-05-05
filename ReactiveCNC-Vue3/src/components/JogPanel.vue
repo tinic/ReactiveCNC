@@ -41,6 +41,12 @@ const windowKeyDown = (event: any) => {
     event.key.startsWith("Arrow") ||
     event.key.startsWith("Page") ||
     event.key == " " ||
+    event.key == "w" ||
+    event.key == "a" ||
+    event.key == "s" ||
+    event.key == "d" ||
+    event.key == "r" ||
+    event.key == "f" ||
     event.key == "Insert" ||
     event.key == "Delete" ||
     event.key == "Home" ||
@@ -51,16 +57,22 @@ const windowKeyDown = (event: any) => {
     event.key == "]"
   ) {
     switch (event.key) {
+      case "a":
       case "ArrowLeft":
         break;
+      case "d":
       case "ArrowRight":
         break;
+      case "s":
       case "ArrowDown":
         break;
+      case "w":
       case "ArrowUp":
         break;
+      case "f":
       case "PageDown":
         break;
+      case "r":
       case "PageUp":
         break;
       case "[":
@@ -107,6 +119,12 @@ const windowKeyUp = (event: any) => {
     event.key.startsWith("Arrow") ||
     event.key.startsWith("Page") ||
     event.key == " " ||
+    event.key == "w" ||
+    event.key == "a" ||
+    event.key == "s" ||
+    event.key == "d" ||
+    event.key == "r" ||
+    event.key == "f" ||
     event.key == "Insert" ||
     event.key == "Delete" ||
     event.key == "Home" ||
@@ -116,6 +134,26 @@ const windowKeyUp = (event: any) => {
     event.key == "[" ||
     event.key == "]"
   ) {
+    switch (event.key) {
+      case "a":
+      case "ArrowLeft":
+        break;
+      case "d":
+      case "ArrowRight":
+        break;
+      case "s":
+      case "ArrowDown":
+        break;
+      case "w":
+      case "ArrowUp":
+        break;
+      case "f":
+      case "PageDown":
+        break;
+      case "r":
+      case "PageUp":
+        break;
+    }
     event.stopPropagation();
   }
 };
