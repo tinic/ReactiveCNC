@@ -6,7 +6,6 @@ import ModePanels from "./components/ModePanels.vue";
 onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
 });
-
 </script>
 
 <template>
