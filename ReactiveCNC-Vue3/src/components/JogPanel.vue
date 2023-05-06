@@ -39,6 +39,22 @@ const jogSpeedChanged = () => {
   jogSpeedSync();
 };
 
+const jogSpeedEmitStr = () => {
+  if (jogMode.value == jogModeOptions.value[0]) {
+    return jogSpeedForMode[0];
+  } else if (jogMode.value == jogModeOptions.value[1]) {
+    return jogSpeedForMode[1];
+  }
+}
+
+const jogModeEmitStr = () => {
+  if (jogMode.value == jogModeOptions.value[0]) {
+    return "slow";
+  } else if (jogMode.value == jogModeOptions.value[1]) {
+    return "fast";
+  }
+}
+
 const windowKeyDown = (event: any) => {
   if (
     event.key.startsWith("Arrow") ||
@@ -64,42 +80,42 @@ const windowKeyDown = (event: any) => {
       case "ArrowLeft":
         if (!jogState[0]) {
           jogState[0] = true;
-          emit("jog", "x-", "start");
+          emit("jog", "x-", jogModeEmitStr(), jogSpeedEmitStr(), "start");
         }
         break;
       case "d":
       case "ArrowRight":
         if (!jogState[1]) {
           jogState[1] = true;
-          emit("jog", "x+", "start");
+          emit("jog", "x+", jogModeEmitStr(), jogSpeedEmitStr(), "start");
         }
         break;
       case "s":
       case "ArrowDown":
         if (!jogState[2]) {
           jogState[2] = true;
-          emit("jog", "y+", "start");
+          emit("jog", "y+", jogModeEmitStr(), jogSpeedEmitStr(), "start");
         }
         break;
       case "w":
       case "ArrowUp":
         if (!jogState[3]) {
           jogState[3] = true;
-          emit("jog", "x-", "start");
+          emit("jog", "x-", jogModeEmitStr(), jogSpeedEmitStr(), "start");
         }
         break;
       case "f":
       case "PageDown":
         if (!jogState[4]) {
           jogState[4] = true;
-          emit("jog", "z-", "start");
+          emit("jog", "z-", jogModeEmitStr(), jogSpeedEmitStr(), "start");
         }
         break;
       case "r":
       case "PageUp":
         if (!jogState[5]) {
           jogState[5] = true;
-          emit("jog", "", "start");
+          emit("jog", "z+", jogModeEmitStr(), jogSpeedEmitStr(), "start");
         }
         break;
       case "[":
@@ -166,42 +182,42 @@ const windowKeyUp = (event: any) => {
       case "ArrowLeft":
         if (jogState[0]) {
           jogState[0] = false;
-          emit("jog", "x-", "stop");
+          emit("jog", "x-", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
       case "d":
       case "ArrowRight":
         if (jogState[1]) {
           jogState[1] = false;
-          emit("jog", "x+", "stop");
+          emit("jog", "x+", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
       case "s":
       case "ArrowDown":
         if (jogState[2]) {
           jogState[2] = false;
-          emit("jog", "y+", "stop");
+          emit("jog", "y+", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
       case "w":
       case "ArrowUp":
         if (jogState[3]) {
           jogState[3] = false;
-          emit("jog", "x-", "stop");
+          emit("jog", "x-", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
       case "f":
       case "PageDown":
         if (jogState[4]) {
           jogState[4] = false;
-          emit("jog", "z-", "stop");
+          emit("jog", "z-", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
       case "r":
       case "PageUp":
         if (jogState[5]) {
           jogState[5] = false;
-          emit("jog", "z+", "stop");
+          emit("jog", "z+", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
     }
@@ -222,11 +238,11 @@ const removeKeyboardHandler = () => {
 };
 
 const mouseDown = (axis: string) => {
-  emit("jog", axis, "start");
+  emit("jog", axis, jogModeEmitStr(), jogSpeedEmitStr(), "start");
 };
 
 const mouseUp = (axis: string) => {
-  emit("jog", axis, "stop");
+  emit("jog", axis, jogModeEmitStr(), jogSpeedEmitStr(), "stop");
 };
 
 defineExpose({

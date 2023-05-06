@@ -22,9 +22,9 @@ const onActiveIndex = () => {
   }
 };
 
-const onJog = ((axis:string, state:string) =>  {
-  console.log(axis + " " + state);
-});
+const onJog = (axis: string, mode:string, speed:string, state: string) => {
+  console.log(axis + " " + mode + " " + speed + " " + state);
+};
 
 onMounted(() => {
   onActiveIndex();
