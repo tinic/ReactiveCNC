@@ -176,12 +176,12 @@ defineExpose({
           <InputText
             v-model="props.data.editedcode"
             @change="updateGCode(props.data as GCodeLine)"
-            class="gridfont w-full m-0 p-0"
+            class="gridfont gcode m-0 p-0"
             autofocus
           />
         </template>
         <template #body="props: any">
-          <div v-html="props.data.highlight" class="gridfont"></div>
+          <div v-html="props.data.highlight" class="gridfont gcode"></div>
         </template>
       </Column>
     </DataTable>
@@ -194,6 +194,14 @@ defineExpose({
   font-weight: regular;
   font-size: 1.5em;
   text-align: left;
+}
+
+.gcode {
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 18em;
 }
 
 :deep(*) {
