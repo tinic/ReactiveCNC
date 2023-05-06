@@ -38,22 +38,20 @@ const jogSpeedChanged = () => {
   }
   jogSpeedSync();
 };
-
 const jogSpeedEmitStr = () => {
   if (jogMode.value == jogModeOptions.value[0]) {
-    return jogSpeedForMode[0];
+    return jogSpeedForMode[0] / 100;
   } else if (jogMode.value == jogModeOptions.value[1]) {
-    return jogSpeedForMode[1];
+    return jogSpeedForMode[1] / 100;
   }
-}
-
+};
 const jogModeEmitStr = () => {
   if (jogMode.value == jogModeOptions.value[0]) {
     return "slow";
   } else if (jogMode.value == jogModeOptions.value[1]) {
     return "fast";
   }
-}
+};
 
 const windowKeyDown = (event: any) => {
   if (
@@ -341,7 +339,7 @@ defineExpose({
               jogSpeed = Math.max(1, jogSpeed - (jogSpeed % 10) - 10);
               jogSpeedSync();
             "
-            :disabled="jogSpeed <= 5"
+            :disabled="jogSpeed <= 1"
           ></Button>
           <Button
             label="+"
