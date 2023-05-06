@@ -3,6 +3,14 @@ import { ref } from "vue";
 
 const emit = defineEmits(["jog"]);
 
+export interface Props {
+  disabled: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+});
+
 const jogState: Array<boolean> = [];
 const jogSpeedForMode: Array<number> = [50, 50];
 
@@ -250,106 +258,108 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex h-full prevent-select p-3">
-    <div class="grid w-full">
-      <div class="col-3"></div>
-      <div class="col-3">
-        <Button
-          label="Y-"
-          class="w-full h-full"
-          @mousedown="mouseDown('y-')"
-          @mouseup="mouseUp('y-')"
-        ></Button>
-      </div>
-      <div class="col-3"></div>
-      <div class="col-3">
-        <Button
-          label="Z+"
-          class="w-full h-full"
-          @mousedown="mouseDown('z+')"
-          @mouseup="mouseUp('z+')"
-        ></Button>
-      </div>
-      <div class="col-3">
-        <Button
-          label="X-"
-          class="w-full h-full"
-          @mousedown="mouseDown('x-')"
-          @mouseup="mouseUp('x-')"
-        ></Button>
-      </div>
-      <div class="col-3"></div>
-      <div class="col-3">
-        <Button
-          label="X+"
-          class="w-full h-full"
-          @mousedown="mouseDown('x+')"
-          @mouseup="mouseUp('x+')"
-        ></Button>
-      </div>
-      <div class="col-3">
-        <Button
-          label="Z-"
-          class="w-full h-full"
-          @mousedown="mouseDown('z-')"
-          @mouseup="mouseUp('z-')"
-        ></Button>
-      </div>
-      <div class="col-3"></div>
-      <div class="col-3">
-        <Button
-          label="Y+"
-          class="w-full h-full"
-          @mousedown="mouseDown('y+')"
-          @mouseup="mouseUp('y+')"
-        ></Button>
-      </div>
-      <div class="col-3"></div>
-      <div class="col-3"></div>
-    </div>
-    <div class="flex ml-5">
-      <div>
-        <SelectButton
-          v-model="jogMode"
-          @update:modelValue="jogModeChanged"
-          :options="jogModeOptions"
-          optionLabel="label"
-          dataKey="value"
-          aria-labelledby="custom"
-        >
-          <template #option="slotProps: any">
-            <div v-html="slotProps.option.label"></div>
-          </template>
-        </SelectButton>
-        <Knob
-          v-model="jogSpeed"
-          @update:modelValue="jogSpeedChanged"
-          :step="1"
-          valueTemplate="{value}%"
-          :min="0"
-          :max="100"
-          :size="150"
-          class="mt-2"
-        ></Knob>
-        <div class="flex">
+  <div :class="{ disabled: props.disabled }">
+    <div class="flex h-full prevent-select p-3">
+      <div class="grid w-full">
+        <div class="col-3"></div>
+        <div class="col-3">
           <Button
-            label="-"
-            class="w-full mr-1 pt-2 pb-2"
-            @click="
-              jogSpeed = Math.max(1, jogSpeed - (jogSpeed % 10) - 10);
-              jogSpeedSync();
-            "
-            :disabled="jogSpeed <= 1"
+            label="Y-"
+            class="w-full h-full"
+            @mousedown="mouseDown('y-')"
+            @mouseup="mouseUp('y-')"
           ></Button>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3">
           <Button
-            label="+"
-            class="w-full ml-1 pt-2 pb-2"
-            @click="
-              jogSpeed = Math.min(100, jogSpeed - (jogSpeed % 10) + 10);
-              jogSpeedSync();
-            "
-            :disabled="jogSpeed >= 100"
+            label="Z+"
+            class="w-full h-full"
+            @mousedown="mouseDown('z+')"
+            @mouseup="mouseUp('z+')"
           ></Button>
+        </div>
+        <div class="col-3">
+          <Button
+            label="X-"
+            class="w-full h-full"
+            @mousedown="mouseDown('x-')"
+            @mouseup="mouseUp('x-')"
+          ></Button>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3">
+          <Button
+            label="X+"
+            class="w-full h-full"
+            @mousedown="mouseDown('x+')"
+            @mouseup="mouseUp('x+')"
+          ></Button>
+        </div>
+        <div class="col-3">
+          <Button
+            label="Z-"
+            class="w-full h-full"
+            @mousedown="mouseDown('z-')"
+            @mouseup="mouseUp('z-')"
+          ></Button>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3">
+          <Button
+            label="Y+"
+            class="w-full h-full"
+            @mousedown="mouseDown('y+')"
+            @mouseup="mouseUp('y+')"
+          ></Button>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-3"></div>
+      </div>
+      <div class="flex ml-5">
+        <div>
+          <SelectButton
+            v-model="jogMode"
+            @update:modelValue="jogModeChanged"
+            :options="jogModeOptions"
+            optionLabel="label"
+            dataKey="value"
+            aria-labelledby="custom"
+          >
+            <template #option="slotProps: any">
+              <div v-html="slotProps.option.label"></div>
+            </template>
+          </SelectButton>
+          <Knob
+            v-model="jogSpeed"
+            @update:modelValue="jogSpeedChanged"
+            :step="1"
+            valueTemplate="{value}%"
+            :min="0"
+            :max="100"
+            :size="150"
+            class="mt-2"
+          ></Knob>
+          <div class="flex">
+            <Button
+              label="-"
+              class="w-full mr-1 pt-2 pb-2"
+              @click="
+                jogSpeed = Math.max(1, jogSpeed - (jogSpeed % 10) - 10);
+                jogSpeedSync();
+              "
+              :disabled="jogSpeed <= 1"
+            ></Button>
+            <Button
+              label="+"
+              class="w-full ml-1 pt-2 pb-2"
+              @click="
+                jogSpeed = Math.min(100, jogSpeed - (jogSpeed % 10) + 10);
+                jogSpeedSync();
+              "
+              :disabled="jogSpeed >= 100"
+            ></Button>
+          </div>
         </div>
       </div>
     </div>

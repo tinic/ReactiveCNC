@@ -5,6 +5,9 @@ import JogPanel from "./JogPanel.vue";
 
 import { ref, onMounted } from "vue";
 
+const cellHeight: number = 37;
+const cellCenterOffset: number = 7;
+
 const jogPanelRef = ref();
 const activeIndex = ref(0);
 
@@ -22,7 +25,7 @@ const onActiveIndex = () => {
   }
 };
 
-const onJog = (axis: string, mode:string, speed:string, state: string) => {
+const onJog = (axis: string, mode: string, speed: string, state: string) => {
   console.log(axis + " " + mode + " " + speed + " " + state);
 };
 
@@ -41,7 +44,12 @@ onMounted(() => {
         <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>PROGRAM</span>
       </template>
-      <GCodePanel :disabled="false" style="width: 600px; height: 25em">
+      <GCodePanel
+        :cellHeight="cellHeight"
+        :cellCenterOffset="cellCenterOffset"
+        :disabled="false"
+        style="width: 600px; height: 25em"
+      >
       </GCodePanel>
     </TabPanel>
     <TabPanel>
@@ -50,7 +58,7 @@ onMounted(() => {
         <span>MDI</span>
       </template>
       <div style="width: 600px; height: 25em">
-        <MDIPanel> </MDIPanel>
+        <MDIPanel :disabled="false"> </MDIPanel>
       </div>
     </TabPanel>
     <TabPanel>
@@ -59,7 +67,7 @@ onMounted(() => {
         <span>JOG</span>
       </template>
       <div style="width: 600px; height: 25em">
-        <JogPanel ref="jogPanelRef" @jog="onJog"> </JogPanel>
+        <JogPanel :disabled="false" ref="jogPanelRef" @jog="onJog"> </JogPanel>
       </div>
     </TabPanel>
   </TabView>
