@@ -72,9 +72,7 @@ const windowKeyDown = (event: any) => {
     event.key == "d" ||
     event.key == "r" ||
     event.key == "f" ||
-    event.key == "Insert" ||
     event.key == "Delete" ||
-    event.key == "Home" ||
     event.key == "End" ||
     event.key == "-" ||
     event.key == "=" ||
@@ -125,12 +123,10 @@ const windowKeyDown = (event: any) => {
         }
         break;
       case "[":
-      case "Insert":
         jogSpeed.value = Math.max(1, jogSpeed.value - 1);
         jogSpeedSync();
         break;
       case "]":
-      case "Home":
         jogSpeed.value = Math.min(100, jogSpeed.value + 1);
         jogSpeedSync();
         break;
@@ -174,9 +170,7 @@ const windowKeyUp = (event: any) => {
     event.key == "d" ||
     event.key == "r" ||
     event.key == "f" ||
-    event.key == "Insert" ||
     event.key == "Delete" ||
-    event.key == "Home" ||
     event.key == "End" ||
     event.key == "-" ||
     event.key == "=" ||
