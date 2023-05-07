@@ -7,6 +7,7 @@ import { ref, onMounted } from "vue";
 
 const cellHeight: number = 37;
 const cellCenterOffset: number = 7;
+const scrollHeight = "22em";
 
 const jogPanelRef = ref();
 const activeIndex = ref(0);
@@ -32,6 +33,7 @@ const onJog = (axis: string, mode: string, speed: string, state: string) => {
 onMounted(() => {
   onActiveIndex();
 });
+
 </script>
 
 <template>
@@ -45,10 +47,11 @@ onMounted(() => {
         <span>PROGRAM</span>
       </template>
       <GCodePanel
+        :scrollHeight="scrollHeight"
         :cellHeight="cellHeight"
         :cellCenterOffset="cellCenterOffset"
         :disabled="false"
-        style="width: 600px; height: 25em"
+        style="width: 600px; height: 23em"
       >
       </GCodePanel>
     </TabPanel>
@@ -57,7 +60,7 @@ onMounted(() => {
         <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>MDI</span>
       </template>
-      <div style="width: 600px; height: 25em">
+      <div style="width: 600px; height: 23em">
         <MDIPanel :disabled="false"> </MDIPanel>
       </div>
     </TabPanel>
@@ -66,7 +69,7 @@ onMounted(() => {
         <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>JOG</span>
       </template>
-      <div style="width: 600px; height: 25em">
+      <div style="width: 600px; height: 23em">
         <JogPanel :disabled="false" ref="jogPanelRef" @jog="onJog"> </JogPanel>
       </div>
     </TabPanel>
@@ -76,7 +79,7 @@ onMounted(() => {
 <style>
 #app .p-tabview-header {
   font-weight: regular;
-  font-size: 1.5em;
+  font-size: 1.25em;
   padding: 0;
   margin: 0;
 }

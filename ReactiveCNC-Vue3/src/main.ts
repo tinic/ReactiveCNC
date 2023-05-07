@@ -24,6 +24,7 @@ import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Knob from "primevue/knob";
 import SelectButton from "primevue/selectbutton";
+import Menubar from 'primevue/menubar';
 
 const routes = [
   {
@@ -77,5 +78,6 @@ app.component("TabView", TabView);
 app.component("TabPanel", TabPanel);
 app.component("Knob", Knob);
 app.component("SelectButton", SelectButton);
+app.component("Menubar", Menubar);
 
 app.mount("#app");

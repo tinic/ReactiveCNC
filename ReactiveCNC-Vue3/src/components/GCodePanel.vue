@@ -17,12 +17,14 @@ export interface Props {
   disabled: boolean;
   cellHeight: number;
   cellCenterOffset: number;
+  scrollHeight: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   cellHeight: 37,
   cellCenterOffset: 7,
+  scrollHeight: "22em"
 });
 
 function updateGCodeLineEditCode(uuid: string, gcode: string) {
@@ -108,6 +110,10 @@ const onKeyDown = () => {
   console.log("onKeyDown");
 };
 
+const dataTableScrollHeight = () => {
+  return props.scrollHeight;
+}
+
 defineExpose({
   scrollToRow,
   selectRow,
@@ -127,7 +133,7 @@ defineExpose({
       tableClass="editable-cells-table"
       showGridlines
       scrollable
-      scrollHeight="24em"
+      :scrollHeight="dataTableScrollHeight()"
       selectionMode="single"
       dataKey="uuid"
       :virtualScrollerOptions="{ itemSize: props.cellHeight }"
