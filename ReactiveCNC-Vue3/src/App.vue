@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { loadGCodeFromURL } from "./GCode.ts";
 import ModePanels from "./components/ModePanels.vue";
+import MainMenu from "./components/MainMenu.vue"
 
 onMounted(() => {
   loadGCodeFromURL("/src/assets/gcode.txt");
@@ -10,7 +11,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <ModePanels class="modepanel"></ModePanels>
+
+  <MainMenu class="mainmenu"></MainMenu>
+  <ModePanels class="modepanels"></ModePanels>
 </template>
 
 <style>
@@ -23,10 +26,16 @@ body {
   background-color: #ccc;
 }
 
-.modepanel {
+.modepanels {
   position: absolute;
   top: 1em;
   left: 1em;
+}
+
+.mainmenu {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .wrapper {
