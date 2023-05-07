@@ -32,12 +32,6 @@ body {
   left: 1em;
 }
 
-.mainmenu {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
 .wrapper {
   display: flex;
   flex-direction: column;
