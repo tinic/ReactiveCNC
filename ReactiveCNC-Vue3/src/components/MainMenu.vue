@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { loadGCodeFromURL } from "../GCode.ts";
 
 const breadcrumbHome = ref({
-    icon: 'pi pi-home',
-    to: '/',
+  icon: "pi pi-home",
+  to: "/",
 });
 
 const breadcrumbItems = ref([]);
@@ -18,8 +19,9 @@ const mainMenu = ref([
     },
     fnkey: ["F1"],
     ffunc: () => {
+      setGlobalMode(1);
       mainMenuStack.value.push(0);
-      breadcrumbItems.value.push({label:'G-code'} as never);
+      breadcrumbItems.value.push({ label: "G-code" } as never);
     },
     smenu: [
       {
@@ -30,11 +32,8 @@ const mainMenu = ref([
         },
         fnkey: ["F1"],
         ffunc: () => {
-          mainMenuStack.value.push(0);
-          breadcrumbItems.value.push({label:'Load'} as never);
+          loadGCodeFromURL("/src/assets/gcode.txt");
         },
-        smenu: [
-        ]
       },
       {
         index: 1,
@@ -58,7 +57,7 @@ const mainMenu = ref([
         index: 3,
         bread: "To Zero",
         label: () => {
-          return "<span class='mainmenu-label'>To Zero</span>" 
+          return "<span class='mainmenu-label'>To Zero</span>";
         },
         fnkey: ["F4"],
         ffunc: () => {},
@@ -67,10 +66,11 @@ const mainMenu = ref([
         index: 9,
         bread: "Back",
         label: () => {
-          return "<span class='mainmenu-label'>Back</span>" 
+          return "<span class='mainmenu-label'>Back</span>";
         },
         fnkey: ["ESC", "F10"],
         ffunc: () => {
+          setGlobalMode(0);
           mainMenuStack.value.pop();
           breadcrumbItems.value.pop();
         },
@@ -81,40 +81,46 @@ const mainMenu = ref([
     index: 1,
     bread: "MDI",
     label: () => {
-      return "<span class='mainmenu-label'><span class='pi pi-calculator pr-2'></span>MDI</span>" 
+      return "<span class='mainmenu-label'><span class='pi pi-calculator pr-2'></span>MDI</span>";
     },
     fnkey: ["F2"],
     ffunc: () => {
+      setGlobalMode(2);
       mainMenuStack.value.push(1);
-      breadcrumbItems.value.push({label:'MDI'} as never);
+      breadcrumbItems.value.push({ label: "MDI" } as never);
     },
     smenu: [
       {
         index: 0,
         bread: "Run",
         label: () => {
-          return "<span class='mainmenu-label'>Run</span>" 
+          return "<span class='mainmenu-label'>Run</span>";
         },
         fnkey: ["F1"],
-        ffunc: () => {},
+        ffunc: () => {
+          document.dispatchEvent(new Event("mdiPanelRun"));
+        },
       },
       {
         index: 1,
         bread: "Clear History",
         label: () => {
-          return "<span class='mainmenu-label'>Clear History</span>" 
+          return "<span class='mainmenu-label'>Clear History</span>";
         },
         fnkey: ["F2"],
-        ffunc: () => {},
+        ffunc: () => {
+          document.dispatchEvent(new Event("mdiPanelClearHistory"));
+        },
       },
       {
         index: 9,
         bread: "Back",
         label: () => {
-          return "<span class='mainmenu-label'>Back</span>" 
+          return "<span class='mainmenu-label'>Back</span>";
         },
         fnkey: ["ESC", "F10"],
         ffunc: () => {
+          setGlobalMode(0);
           mainMenuStack.value.pop();
           breadcrumbItems.value.pop();
         },
@@ -125,51 +131,65 @@ const mainMenu = ref([
     index: 2,
     bread: "JOG",
     label: () => {
-      return "<span class='mainmenu-label'><span class='pi pi-arrows-alt pr-2'></span>JOG</span>" 
+      return "<span class='mainmenu-label'><span class='pi pi-arrows-alt pr-2'></span>JOG</span>";
     },
     fnkey: ["F3"],
     ffunc: () => {
-    }
+      setGlobalMode(3);
+      mainMenuStack.value.push(2);
+      breadcrumbItems.value.push({ label: "JOG" } as never);
+    },
+    smenu: [
+      {
+        index: 9,
+        bread: "Back",
+        label: () => {
+          return "<span class='mainmenu-label'>Back</span>";
+        },
+        fnkey: ["ESC", "F10"],
+        ffunc: () => {
+          setGlobalMode(0);
+          mainMenuStack.value.pop();
+          breadcrumbItems.value.pop();
+        },
+      },
+    ],
   },
   {
     index: 3,
     bread: "Tool table",
     label: () => {
-      return "<span class='mainmenu-label'>Tool table</span>" 
+      return "<span class='mainmenu-label'>Tool table</span>";
     },
     fnkey: ["F4"],
-    ffunc: () => {
-    }
+    ffunc: () => {},
   },
   {
     index: 4,
     bread: "Tool library",
     label: () => {
-      return "<span class='mainmenu-label'>Tool library</span>" 
+      return "<span class='mainmenu-label'>Tool library</span>";
     },
     fnkey: ["F5"],
-    ffunc: () => {
-    }
+    ffunc: () => {},
   },
   {
     index: 7,
     bread: "Settings",
     label: () => {
-      return "<span class='mainmenu-label'>Settings</span>" 
+      return "<span class='mainmenu-label'><span class='pi pi-sliders-h pr-2'></span>Settings</span>";
     },
     fnkey: ["F8"],
-    ffunc: () => {
-    }
+    ffunc: () => {},
   },
   {
     index: 8,
     bread: "Quit",
     label: () => {
-      return "<span class='mainmenu-label'>Quit</span>" 
+      return "<span class='mainmenu-label'>Quit</span>";
     },
     fnkey: ["F9"],
-    ffunc: () => {
-    }
+    ffunc: () => {},
   },
 ]);
 
@@ -192,13 +212,16 @@ const ButtonLabel = (index: number) => {
   if (!foundItem) {
     return "";
   }
+  var mstr = foundItem.smenu
+    ? "<span class='pi pi-bars mainmenu-submenu'></span>"
+    : "";
   var fstr = "<span class='mainmenu-function'>";
   foundItem.fnkey.forEach((fkey: any) => {
     fstr += fkey + "/";
   });
   fstr = fstr.substring(0, fstr.length - 1);
   fstr += "</span>";
-  return fstr + foundItem.label();
+  return mstr + fstr + foundItem.label();
 };
 
 const ButtonClick = (index: number) => {
@@ -241,14 +264,24 @@ const installKeyboardHandler = () => {
 };
 
 onMounted(() => {
-    installKeyboardHandler();
+  installKeyboardHandler();
 });
+
+function setGlobalMode(index: number) {
+  document.dispatchEvent(
+    new CustomEvent<number>("setGlobalMode", {
+      detail: index,
+      bubbles: true,
+      cancelable: true,
+    })
+  );
+}
 </script>
 
 <template>
   <div class="mainmenu flex p-1 w-full">
     <div class="flex-row w-full">
-      <div class="flex" style="margin:0.4%">
+      <div class="flex" style="margin: 0.4%">
         <Breadcrumb :home="breadcrumbHome" :model="breadcrumbItems" />
       </div>
       <div class="grid m-0 w-full">
@@ -289,5 +322,11 @@ onMounted(() => {
   position: absolute;
   top: 0.5em;
   right: 0.5em;
+}
+
+.mainmenu-submenu {
+  position: absolute;
+  top: 0.75em;
+  left: 0.5em;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { mdiLinesRef, MDILine } from "../MDI.ts";
 import DataTable from "primevue/datatable";
 
@@ -8,10 +8,12 @@ const dataTableRef = ref<DataTable>();
 
 export interface Props {
   disabled: boolean;
+  scrollHeight: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
+  scrollHeight: 22,
 });
 
 const currentMdiLine = ref<string>("");
@@ -28,6 +30,18 @@ const onDeleteKey = () => {
   mdiLinesRef.value.splice(index, 1);
   currentMdiLine.value = "";
 };
+
+const dataTableScrollHeight = () => {
+  return props.scrollHeight - 3 + "em";
+};
+
+onMounted(() => {
+  document.addEventListener("mdiPanelRun", function () {});
+  document.addEventListener("mdiPanelClearHistory", function () {
+    mdiLinesRef.value.length = 0;
+    currentMdiLine.value = "";
+  });
+});
 </script>
 
 <template>
@@ -41,7 +55,7 @@ const onDeleteKey = () => {
         :value="mdiLinesRef"
         showGridlines
         scrollable
-        scrollHeight="21em"
+        :scrollHeight="dataTableScrollHeight()"
         selectionMode="single"
         dataKey="uuid"
       >

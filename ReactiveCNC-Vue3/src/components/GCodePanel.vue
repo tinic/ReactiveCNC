@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
-import { loadGCodeFromURL } from "../GCode.ts";
 
 import VirtualScroller from "primevue/virtualscroller";
 import DataTable from "primevue/datatable";
@@ -18,14 +17,14 @@ export interface Props {
   disabled: boolean;
   cellHeight: number;
   cellCenterOffset: number;
-  scrollHeight: string;
+  scrollHeight: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   cellHeight: 37,
   cellCenterOffset: 7,
-  scrollHeight: "22em"
+  scrollHeight: 22,
 });
 
 function updateGCodeLineEditCode(uuid: string, gcode: string) {
@@ -112,17 +111,15 @@ const onKeyDown = () => {
 };
 
 const dataTableScrollHeight = () => {
-  return props.scrollHeight;
-}
+  return props.scrollHeight + "em";
+};
 
 defineExpose({
   scrollToRow,
   selectRow,
 });
 
-onMounted(() => {
-  loadGCodeFromURL("/src/assets/gcode.txt");
-});
+onMounted(() => {});
 </script>
 
 <template>

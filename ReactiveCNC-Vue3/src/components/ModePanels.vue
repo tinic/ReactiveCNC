@@ -2,25 +2,26 @@
 import GCodePanel from "./GCodePanel.vue";
 import MDIPanel from "./MDIPanel.vue";
 import JogPanel from "./JogPanel.vue";
+import DefaultPanel from "./DefaultPanel.vue";
 
 import { ref, onMounted } from "vue";
 
 const cellHeight: number = 37;
 const cellCenterOffset: number = 7;
-const scrollHeight = "22em";
+const scrollHeight: number = 23;
 
 const jogPanelRef = ref();
-const activeIndex = ref(0);
+const activeMode = ref(0);
 
-const onActiveIndex = () => {
-  switch (activeIndex.value) {
+const onActiveMode = () => {
+  switch (activeMode.value) {
+    default:
     case 0:
-      jogPanelRef.value.removeKeyboardHandler();
-      break;
     case 1:
+    case 2:
       jogPanelRef.value.removeKeyboardHandler();
       break;
-    case 2:
+    case 3:
       jogPanelRef.value.installKeyboardHandler();
       break;
   }
@@ -30,14 +31,38 @@ const onJog = (axis: string, mode: string, speed: string, state: string) => {
   console.log(axis + " " + mode + " " + speed + " " + state);
 };
 
+function setActiveMode(index: number) {
+  activeMode.value = index;
+  onActiveMode();
+}
+
 onMounted(() => {
-  onActiveIndex();
+  onActiveMode();
+  document.addEventListener("setGlobalMode", function (event: Event) {
+    let e = event as CustomEvent<number>;
+    switch (e.detail) {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+        setActiveMode(e.detail);
+        break;
+    }
+  });
 });
 </script>
 
 <template>
   <div class="modepanels">
-    <Card v-if="activeIndex == 0">
+    <Card v-show="activeMode == 0">
+      <template #content>
+        <DefaultPanel
+          :disabled="false"
+          style="width: 600px; height: 23em"
+        ></DefaultPanel>
+      </template>
+    </Card>
+    <Card v-show="activeMode == 1">
       <template #content>
         <GCodePanel
           :scrollHeight="scrollHeight"
@@ -49,14 +74,14 @@ onMounted(() => {
         </GCodePanel>
       </template>
     </Card>
-    <Card v-if="activeIndex == 1">
+    <Card v-show="activeMode == 2">
       <template #content>
         <div style="width: 600px; height: 23em">
-          <MDIPanel :disabled="false"> </MDIPanel>
+          <MDIPanel :scrollHeight="scrollHeight" :disabled="false"> </MDIPanel>
         </div>
       </template>
     </Card>
-    <Card v-if="activeIndex == 2">
+    <Card v-show="activeMode == 3">
       <template #content>
         <div style="width: 600px; height: 23em">
           <JogPanel :disabled="false" ref="jogPanelRef" @jog="onJog">
