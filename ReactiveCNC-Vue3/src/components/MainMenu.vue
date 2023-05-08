@@ -7,6 +7,12 @@ const breadcrumbHome = ref({
   to: "/",
 });
 
+const gcodeMist = ref(false);
+const gcodeFlood = ref(false);
+const gcodeOptionalStop = ref(true);
+const gcodeOptionalBlock = ref(true);
+const gcodePauseSpindle = ref(false);
+
 const breadcrumbItems = ref([]);
 
 const mainMenuStack = ref(Array<number>());
@@ -37,9 +43,9 @@ const mainMenu = ref([
       },
       {
         index: 1,
-        bread: "Run",
+        bread: "Cycle Start",
         label: () => {
-          return "<span class='mainmenu-label'>Run</span>";
+          return "<span class='mainmenu-label'>Cycle Start</span>";
         },
         fnkey: ["F2"],
         ffunc: () => {},
@@ -55,18 +61,132 @@ const mainMenu = ref([
       },
       {
         index: 3,
-        bread: "To Zero",
+        bread: "Stop",
         label: () => {
-          return "<span class='mainmenu-label'>To Zero</span>";
+          return "<span class='mainmenu-label'>Stop</span>";
         },
         fnkey: ["F4"],
         ffunc: () => {},
       },
       {
-        index: 9,
-        bread: "Back",
+        index: 4,
+        bread: "Step",
         label: () => {
-          return "<span class='mainmenu-label'>Back</span>";
+          return "<span class='mainmenu-label'>Step</span>";
+        },
+        fnkey: ["F5"],
+        ffunc: () => {},
+      },
+      {
+        index: 5,
+        bread: "Goto Zero",
+        label: () => {
+          return "<span class='mainmenu-label'>Goto Zero</span>";
+        },
+        fnkey: ["F6"],
+        ffunc: () => {},
+      },
+      {
+        index: 6,
+        bread: "Mist",
+        label: () => {
+          return "<span class='mainmenu-label'>Mist</span>";
+        },
+        fnkey: ["F7"],
+        onoff: () => {
+          return gcodeMist.value;
+        },
+        ffunc: () => {
+          gcodeMist.value = !gcodeMist.value;
+        },
+      },
+      {
+        index: 7,
+        bread: "Flood",
+        label: () => {
+          return "<span class='mainmenu-label'>Flood</span>";
+        },
+        fnkey: ["F8"],
+        onoff: () => {
+          return gcodeFlood.value;
+        },
+        ffunc: () => {
+          gcodeFlood.value = !gcodeFlood.value;
+        },
+      },
+      {
+        index: 8,
+        bread: "Options",
+        label: () => {
+          return "<span class='mainmenu-label'>Options</span>";
+        },
+        fnkey: ["F9"],
+        ffunc: () => {
+          mainMenuStack.value.push(8);
+          breadcrumbItems.value.push({ label: "Options" } as never);
+        },
+        smenu: [
+          {
+            index: 0,
+            bread: "Optional Stop",
+            label: () => {
+              return "<span class='mainmenu-label'>Optional Stop</span>";
+            },
+            fnkey: ["F1"],
+            onoff: () => {
+              return gcodeOptionalStop.value;
+            },
+            ffunc: () => {
+              gcodeOptionalStop.value = !gcodeOptionalStop.value;
+            },
+          },
+          {
+            index: 1,
+            bread: "Optional Block",
+            label: () => {
+              return "<span class='mainmenu-label'>Optional Block</span>";
+            },
+            fnkey: ["F2"],
+            onoff: () => {
+              return gcodeOptionalBlock.value;
+            },
+            ffunc: () => {
+              gcodeOptionalBlock.value = !gcodeOptionalBlock.value;
+            },
+          },
+          {
+            index: 2,
+            bread: "Pause Spindle",
+            label: () => {
+              return "<span class='mainmenu-label'>Pause Spindle</span>";
+            },
+            fnkey: ["F3"],
+            onoff: () => {
+              return gcodePauseSpindle.value;
+            },
+            ffunc: () => {
+              gcodePauseSpindle.value = !gcodePauseSpindle.value;
+            },
+          },
+          {
+            index: 9,
+            bread: "Back",
+            label: () => {
+              return "<span class='mainmenu-label'>Back</span>";
+            },
+            fnkey: ["ESC", "F10"],
+            ffunc: () => {
+              mainMenuStack.value.pop();
+              breadcrumbItems.value.pop();
+            },
+          },
+        ],
+      },
+      {
+        index: 9,
+        bread: "Stop/Back",
+        label: () => {
+          return "<span class='mainmenu-label'>Stop/Back</span>";
         },
         fnkey: ["ESC", "F10"],
         ffunc: () => {
@@ -212,6 +332,12 @@ const ButtonLabel = (index: number) => {
   if (!foundItem) {
     return "";
   }
+  var onoff =
+    foundItem.onoff == undefined
+      ? ""
+      : foundItem.onoff()
+      ? "<span class='pi pi-circle-fill mainmenu-onoff'></span>"
+      : "<span class='pi pi-circle mainmenu-onoff'></span>";
   var mstr = foundItem.smenu
     ? "<span class='pi pi-bars mainmenu-submenu'></span>"
     : "";
@@ -221,7 +347,7 @@ const ButtonLabel = (index: number) => {
   });
   fstr = fstr.substring(0, fstr.length - 1);
   fstr += "</span>";
-  return mstr + fstr + foundItem.label();
+  return onoff + mstr + fstr + foundItem.label();
 };
 
 const ButtonClick = (index: number) => {
@@ -325,6 +451,12 @@ function setGlobalMode(index: number) {
 }
 
 .mainmenu-submenu {
+  position: absolute;
+  top: 0.75em;
+  left: 0.5em;
+}
+
+.mainmenu-onoff {
   position: absolute;
   top: 0.75em;
   left: 0.5em;

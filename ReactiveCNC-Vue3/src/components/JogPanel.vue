@@ -131,7 +131,6 @@ const windowKeyDown = (event: any) => {
         jogSpeedSync();
         break;
       case "-":
-      case "Delete":
         jogSpeed.value = Math.max(
           1,
           jogSpeed.value - (jogSpeed.value % 10) - 10
@@ -139,12 +138,23 @@ const windowKeyDown = (event: any) => {
         jogSpeedSync();
         break;
       case "=":
-      case "End":
         jogSpeed.value = Math.min(
           100,
           jogSpeed.value - (jogSpeed.value % 10) + 10
         );
         jogSpeedSync();
+        break;
+      case "Delete":
+        if (!jogState[6]) {
+          jogState[6] = true;
+          emit("jog", "a-", jogModeEmitStr(), jogSpeedEmitStr(), "start");
+        }
+        break;
+      case "End":
+        if (!jogState[7]) {
+          jogState[7] = true;
+          emit("jog", "a+", jogModeEmitStr(), jogSpeedEmitStr(), "start");
+        }
         break;
       case " ":
         if (jogMode.value == jogModeOptions.value[0]) {
@@ -220,6 +230,18 @@ const windowKeyUp = (event: any) => {
           emit("jog", "z+", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
         }
         break;
+      case "Delete":
+        if (jogState[6]) {
+          jogState[6] = false;
+          emit("jog", "a-", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
+        }
+        break;
+      case "End":
+        if (jogState[7]) {
+          jogState[7] = false;
+          emit("jog", "a+", jogModeEmitStr(), jogSpeedEmitStr(), "stop");
+        }
+        break;
     }
     event.stopPropagation();
   }
@@ -255,7 +277,14 @@ defineExpose({
   <div :class="{ disabled: props.disabled }">
     <div class="flex h-full prevent-select p-3">
       <div class="grid w-full">
-        <div class="col-3"></div>
+        <div class="col-3">
+          <Button
+            label="A-"
+            class="w-full h-full"
+            @mousedown="mouseDown('a-')"
+            @mouseup="mouseUp('a-')"
+          ></Button>
+        </div>
         <div class="col-3">
           <Button
             label="Y-"
@@ -264,7 +293,14 @@ defineExpose({
             @mouseup="mouseUp('y-')"
           ></Button>
         </div>
-        <div class="col-3"></div>
+        <div class="col-3">
+          <Button
+            label="A+"
+            class="w-full h-full"
+            @mousedown="mouseDown('a+')"
+            @mouseup="mouseUp('a+')"
+          ></Button>
+        </div>
         <div class="col-3">
           <Button
             label="Z+"
