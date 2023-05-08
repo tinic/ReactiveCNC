@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 
-const mainMenuStack = ref(Array<number>());
+const breadcrumbHome = ref({
+    icon: 'pi pi-home',
+    to: '/',
+});
 
+const breadcrumbItems = ref([]);
+
+const mainMenuStack = ref(Array<number>());
 const mainMenu = ref([
   {
     index: 0,
     bread: "G-code",
     label: () => {
-      return "<div class='mainmenu-label'>G-code</div>";
+      return "<span class='mainmenu-label'><span class='pi pi-cog pr-2'></span>G-code</span>";
     },
     fnkey: ["F1"],
     ffunc: () => {
       mainMenuStack.value.push(0);
+      breadcrumbItems.value.push({label:'G-code'} as never);
     },
     smenu: [
       {
@@ -22,7 +29,12 @@ const mainMenu = ref([
           return "<span class='mainmenu-label'>Load</span>";
         },
         fnkey: ["F1"],
-        ffunc: () => {},
+        ffunc: () => {
+          mainMenuStack.value.push(0);
+          breadcrumbItems.value.push({label:'Load'} as never);
+        },
+        smenu: [
+        ]
       },
       {
         index: 1,
@@ -57,9 +69,10 @@ const mainMenu = ref([
         label: () => {
           return "<span class='mainmenu-label'>Back</span>" 
         },
-        fnkey: ["ESC", "F8"],
+        fnkey: ["ESC", "F10"],
         ffunc: () => {
           mainMenuStack.value.pop();
+          breadcrumbItems.value.pop();
         },
       },
     ],
@@ -68,11 +81,12 @@ const mainMenu = ref([
     index: 1,
     bread: "MDI",
     label: () => {
-      return "<span class='mainmenu-label'>MDI</span>" 
+      return "<span class='mainmenu-label'><span class='pi pi-calculator pr-2'></span>MDI</span>" 
     },
     fnkey: ["F2"],
     ffunc: () => {
       mainMenuStack.value.push(1);
+      breadcrumbItems.value.push({label:'MDI'} as never);
     },
     smenu: [
       {
@@ -99,9 +113,10 @@ const mainMenu = ref([
         label: () => {
           return "<span class='mainmenu-label'>Back</span>" 
         },
-        fnkey: ["ESC", "F8"],
+        fnkey: ["ESC", "F10"],
         ffunc: () => {
           mainMenuStack.value.pop();
+          breadcrumbItems.value.pop();
         },
       },
     ],
@@ -110,7 +125,7 @@ const mainMenu = ref([
     index: 2,
     bread: "JOG",
     label: () => {
-      return "<span class='mainmenu-label'>JOG</span>" 
+      return "<span class='mainmenu-label'><span class='pi pi-arrows-alt pr-2'></span>JOG</span>" 
     },
     fnkey: ["F3"],
     ffunc: () => {
@@ -118,11 +133,31 @@ const mainMenu = ref([
   },
   {
     index: 3,
-    bread: "Tooltable",
+    bread: "Tool table",
     label: () => {
       return "<span class='mainmenu-label'>Tool table</span>" 
     },
     fnkey: ["F4"],
+    ffunc: () => {
+    }
+  },
+  {
+    index: 4,
+    bread: "Tool library",
+    label: () => {
+      return "<span class='mainmenu-label'>Tool library</span>" 
+    },
+    fnkey: ["F5"],
+    ffunc: () => {
+    }
+  },
+  {
+    index: 7,
+    bread: "Settings",
+    label: () => {
+      return "<span class='mainmenu-label'>Settings</span>" 
+    },
+    fnkey: ["F8"],
     ffunc: () => {
     }
   },
@@ -132,7 +167,7 @@ const mainMenu = ref([
     label: () => {
       return "<span class='mainmenu-label'>Quit</span>" 
     },
-    fnkey: ["F7"],
+    fnkey: ["F9"],
     ffunc: () => {
     }
   },
@@ -208,27 +243,13 @@ const installKeyboardHandler = () => {
 onMounted(() => {
     installKeyboardHandler();
 });
-
-const home = ref({
-    icon: 'pi pi-home',
-    to: '/',
-});
-const items = ref([
-    {label: 'Computer'},
-    {label: 'Notebook'},
-    {label: 'Accessories'},
-    {label: 'Backpacks'},
-    {label: 'Item'}
-]);
-
-
 </script>
 
 <template>
   <div class="mainmenu flex p-1 w-full">
     <div class="flex-row w-full">
       <div class="flex" style="margin:0.4%">
-        <Breadcrumb :home="home" :model="items" />
+        <Breadcrumb :home="breadcrumbHome" :model="breadcrumbItems" />
       </div>
       <div class="grid m-0 w-full">
         <div v-for="n in 10" class="col10">
