@@ -7,7 +7,7 @@ import { ref, onMounted } from "vue";
 
 const cellHeight: number = 37;
 const cellCenterOffset: number = 7;
-const scrollHeight = "22em";
+const scrollHeight = "20.5em";
 
 const jogPanelRef = ref();
 const activeIndex = ref(0);
@@ -51,7 +51,7 @@ onMounted(() => {
         :cellHeight="cellHeight"
         :cellCenterOffset="cellCenterOffset"
         :disabled="false"
-        style="width: 600px; height: 23em"
+        style="width: 600px; height: 21em"
       >
       </GCodePanel>
     </TabPanel>
@@ -60,7 +60,7 @@ onMounted(() => {
         <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>MDI</span>
       </template>
-      <div style="width: 600px; height: 23em">
+      <div style="width: 600px; height: 21em">
         <MDIPanel :disabled="false"> </MDIPanel>
       </div>
     </TabPanel>
@@ -69,7 +69,7 @@ onMounted(() => {
         <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 1.5rem" />
         <span>JOG</span>
       </template>
-      <div style="width: 600px; height: 23em">
+      <div style="width: 600px; height: 21em">
         <JogPanel :disabled="false" ref="jogPanelRef" @jog="onJog"> </JogPanel>
       </div>
     </TabPanel>
