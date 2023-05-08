@@ -11,6 +11,7 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 
 import Button from "primevue/button";
+import Card from "primevue/card";
 import DialogService from "primevue/dialogservice";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
@@ -67,6 +68,7 @@ app.use(DialogService);
 app.use(router);
 
 app.component("Button", Button);
+app.component("Card", Card);
 app.component("DataTable", DataTable);
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);

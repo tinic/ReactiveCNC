@@ -7,7 +7,7 @@ import { ref, onMounted } from "vue";
 
 const cellHeight: number = 37;
 const cellCenterOffset: number = 7;
-const scrollHeight = "20.5em";
+const scrollHeight = "22em";
 
 const jogPanelRef = ref();
 const activeIndex = ref(0);
@@ -33,58 +33,53 @@ const onJog = (axis: string, mode: string, speed: string, state: string) => {
 onMounted(() => {
   onActiveIndex();
 });
-
 </script>
 
 <template>
-  <TabView
-    v-model:activeIndex="activeIndex"
-    @update:activeIndex="onActiveIndex"
-  >
-    <TabPanel>
-      <template #header>
-        <i class="pi pi-cog m-0 p-0 pr-2" style="font-size: 1.5rem" />
-        <span>PROGRAM</span>
+  <div class="modepanels">
+    <Card v-if="activeIndex == 0">
+      <template #content>
+        <GCodePanel
+          :scrollHeight="scrollHeight"
+          :cellHeight="cellHeight"
+          :cellCenterOffset="cellCenterOffset"
+          :disabled="false"
+          style="width: 600px; height: 23em"
+        >
+        </GCodePanel>
       </template>
-      <GCodePanel
-        :scrollHeight="scrollHeight"
-        :cellHeight="cellHeight"
-        :cellCenterOffset="cellCenterOffset"
-        :disabled="false"
-        style="width: 600px; height: 21em"
-      >
-      </GCodePanel>
-    </TabPanel>
-    <TabPanel>
-      <template #header>
-        <i class="pi pi-calculator m-0 p-0 pr-2" style="font-size: 1.5rem" />
-        <span>MDI</span>
+    </Card>
+    <Card v-if="activeIndex == 1">
+      <template #content>
+        <div style="width: 600px; height: 23em">
+          <MDIPanel :disabled="false"> </MDIPanel>
+        </div>
       </template>
-      <div style="width: 600px; height: 21em">
-        <MDIPanel :disabled="false"> </MDIPanel>
-      </div>
-    </TabPanel>
-    <TabPanel>
-      <template #header>
-        <i class="pi pi-arrows-alt m-0 p-0 pr-2" style="font-size: 1.5rem" />
-        <span>JOG</span>
+    </Card>
+    <Card v-if="activeIndex == 2">
+      <template #content>
+        <div style="width: 600px; height: 23em">
+          <JogPanel :disabled="false" ref="jogPanelRef" @jog="onJog">
+          </JogPanel>
+        </div>
       </template>
-      <div style="width: 600px; height: 21em">
-        <JogPanel :disabled="false" ref="jogPanelRef" @jog="onJog"> </JogPanel>
-      </div>
-    </TabPanel>
-  </TabView>
+    </Card>
+  </div>
 </template>
 
-<style>
-#app .p-tabview-header {
-  font-weight: regular;
-  font-size: 1.25em;
-  padding: 0;
-  margin: 0;
+<style scoped>
+.modepanels {
+  position: absolute;
+  top: 0.25em;
+  left: 0.25em;
 }
+</style>
 
-#app .p-tabview .p-tabview-panels {
+<style>
+#app .p-card-body {
+  padding: 0.25em;
+}
+#app .p-card-content {
   padding: 0em;
 }
 </style>

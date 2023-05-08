@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { gcodeLinesRef, GCodeLine } from "../GCode.ts";
+import { loadGCodeFromURL } from "../GCode.ts";
 
 import VirtualScroller from "primevue/virtualscroller";
 import DataTable from "primevue/datatable";
@@ -117,6 +118,10 @@ const dataTableScrollHeight = () => {
 defineExpose({
   scrollToRow,
   selectRow,
+});
+
+onMounted(() => {
+  loadGCodeFromURL("/src/assets/gcode.txt");
 });
 </script>
 
