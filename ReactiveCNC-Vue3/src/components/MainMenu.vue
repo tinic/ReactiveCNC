@@ -13,6 +13,9 @@ const gcodeOptionalStop = ref(true);
 const gcodeOptionalBlock = ref(true);
 const gcodePauseSpindle = ref(false);
 
+const mainMachineOnOff = ref(false);
+const mainEStopReset = ref(false);
+
 const breadcrumbItems = ref([]);
 
 const mainMenuStack = ref(Array<number>());
@@ -20,7 +23,7 @@ const mainMenu = ref([
   {
     index: 0,
     bread: "G-code",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'><span class='pi pi-cog pr-2'></span>G-code</span>";
     },
     fnkey: ["F1"],
@@ -33,7 +36,7 @@ const mainMenu = ref([
       {
         index: 0,
         bread: "Load",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Load</span>";
         },
         fnkey: ["F1"],
@@ -44,7 +47,7 @@ const mainMenu = ref([
       {
         index: 1,
         bread: "Cycle Start",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Cycle Start</span>";
         },
         fnkey: ["F2"],
@@ -53,7 +56,7 @@ const mainMenu = ref([
       {
         index: 2,
         bread: "Pause",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Pause</span>";
         },
         fnkey: ["F3"],
@@ -62,7 +65,7 @@ const mainMenu = ref([
       {
         index: 3,
         bread: "Stop",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Stop</span>";
         },
         fnkey: ["F4"],
@@ -71,7 +74,7 @@ const mainMenu = ref([
       {
         index: 4,
         bread: "Step",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Step</span>";
         },
         fnkey: ["F5"],
@@ -80,7 +83,7 @@ const mainMenu = ref([
       {
         index: 5,
         bread: "Goto Zero",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Goto Zero</span>";
         },
         fnkey: ["F6"],
@@ -89,7 +92,7 @@ const mainMenu = ref([
       {
         index: 6,
         bread: "Mist",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Mist</span>";
         },
         fnkey: ["F7"],
@@ -103,7 +106,7 @@ const mainMenu = ref([
       {
         index: 7,
         bread: "Flood",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Flood</span>";
         },
         fnkey: ["F8"],
@@ -117,7 +120,7 @@ const mainMenu = ref([
       {
         index: 8,
         bread: "Options",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Options</span>";
         },
         fnkey: ["F9"],
@@ -129,7 +132,7 @@ const mainMenu = ref([
           {
             index: 0,
             bread: "Optional Stop",
-            label: () => {
+            label: function():string {
               return "<span class='mainmenu-label'>Optional Stop</span>";
             },
             fnkey: ["F1"],
@@ -143,7 +146,7 @@ const mainMenu = ref([
           {
             index: 1,
             bread: "Optional Block",
-            label: () => {
+            label: function():string {
               return "<span class='mainmenu-label'>Optional Block</span>";
             },
             fnkey: ["F2"],
@@ -157,7 +160,7 @@ const mainMenu = ref([
           {
             index: 2,
             bread: "Pause Spindle",
-            label: () => {
+            label: function():string {
               return "<span class='mainmenu-label'>Pause Spindle</span>";
             },
             fnkey: ["F3"],
@@ -171,7 +174,7 @@ const mainMenu = ref([
           {
             index: 9,
             bread: "Back",
-            label: () => {
+            label: function():string {
               return "<span class='mainmenu-label'>Back</span>";
             },
             fnkey: ["ESC", "F10"],
@@ -185,7 +188,7 @@ const mainMenu = ref([
       {
         index: 9,
         bread: "Stop/Back",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Stop/Back</span>";
         },
         fnkey: ["ESC", "F10"],
@@ -200,7 +203,7 @@ const mainMenu = ref([
   {
     index: 1,
     bread: "MDI",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'><span class='pi pi-calculator pr-2'></span>MDI</span>";
     },
     fnkey: ["F2"],
@@ -213,7 +216,7 @@ const mainMenu = ref([
       {
         index: 0,
         bread: "Run",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Run</span>";
         },
         fnkey: ["F1"],
@@ -224,7 +227,7 @@ const mainMenu = ref([
       {
         index: 1,
         bread: "Clear History",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Clear History</span>";
         },
         fnkey: ["F2"],
@@ -235,7 +238,7 @@ const mainMenu = ref([
       {
         index: 9,
         bread: "Back",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Back</span>";
         },
         fnkey: ["ESC", "F10"],
@@ -250,7 +253,7 @@ const mainMenu = ref([
   {
     index: 2,
     bread: "JOG",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'><span class='pi pi-arrows-alt pr-2'></span>JOG</span>";
     },
     fnkey: ["F3"],
@@ -263,7 +266,7 @@ const mainMenu = ref([
       {
         index: 9,
         bread: "Back",
-        label: () => {
+        label: function():string {
           return "<span class='mainmenu-label'>Back</span>";
         },
         fnkey: ["ESC", "F10"],
@@ -278,7 +281,7 @@ const mainMenu = ref([
   {
     index: 3,
     bread: "Tool table",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'>Tool table</span>";
     },
     fnkey: ["F4"],
@@ -287,16 +290,52 @@ const mainMenu = ref([
   {
     index: 4,
     bread: "Tool library",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'>Tool library</span>";
     },
     fnkey: ["F5"],
     ffunc: () => {},
   },
   {
+    index: 5,
+    bread: "Machine On/Off",
+    onoff: () => {
+      return mainMachineOnOff.value
+    },
+    label: function():string {
+      if (mainMachineOnOff.value) {
+        return "<span class='mainmenu-label' style='color:#8f8'>Power ON</span>";
+      } else {
+        return "<span class='mainmenu-label' style='color:#f66'>Power OFF</span>";
+      }
+    },
+    fnkey: ["F6"],
+    ffunc: () => {
+      mainMachineOnOff.value = !mainMachineOnOff.value;
+    },
+  },
+  {
+    index: 6,
+    bread: "EStop",
+    onoff: () => {
+      return mainEStopReset.value
+    },
+    label: function():string {
+      if (mainEStopReset.value) {
+        return "<span class='mainmenu-label' style='color:#8f8'>E-stop Reset</span>";
+      } else {
+        return "<span class='mainmenu-label' style='color:#f66'>E-stop Engaged</span>";
+      }
+    },
+    fnkey: ["F7"],
+    ffunc: () => {
+      mainEStopReset.value = !mainEStopReset.value;
+    },
+  },
+  {
     index: 7,
     bread: "Settings",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'><span class='pi pi-sliders-h pr-2'></span>Settings</span>";
     },
     fnkey: ["F8"],
@@ -305,7 +344,7 @@ const mainMenu = ref([
   {
     index: 8,
     bread: "Quit",
-    label: () => {
+    label: function():string {
       return "<span class='mainmenu-label'>Quit</span>";
     },
     fnkey: ["F9"],
